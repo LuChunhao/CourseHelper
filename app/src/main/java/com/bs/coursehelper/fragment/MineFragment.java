@@ -92,7 +92,7 @@ public class MineFragment extends BaseFragment {
                     RxActivityTool.skipActivity(mContext, ForgetPwdActivity.class);
                     break;
             }
-            RxToast.normal(s.getClassfiyName());
+            //RxToast.normal(s.getClassfiyName());
         });
         idRvMine.setAdapter(mineDescAdapter);
 
@@ -100,6 +100,14 @@ public class MineFragment extends BaseFragment {
         User user = new Gson().fromJson(userInfoStr, User.class);
         idTvUserName.setText(user.getUserName());
         idTvUserPhone.setText(user.getUserNumber());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userInfoStr = (String) SPUtil.getInstanse().getParam(Constants.USER_LOCAL_INFO, "");
+        User user = new Gson().fromJson(userInfoStr, User.class);
+        idTvUserName.setText(user.getUserName());
     }
 
     @OnClick(R.id.id_tv_login_out)

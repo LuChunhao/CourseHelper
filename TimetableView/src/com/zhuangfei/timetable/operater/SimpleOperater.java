@@ -60,7 +60,7 @@ public class SimpleOperater extends AbsOperater{
         inflater.inflate(R.layout.timetable_layout, mView);
         containerLayout = mView.findViewById(R.id.id_container);
         dateLayout = mView.findViewById(R.id.id_datelayout);
-        mView.monthWidthDp(40);
+        mView.monthWidthDp(80);
         initAttr(attrs);
     }
 

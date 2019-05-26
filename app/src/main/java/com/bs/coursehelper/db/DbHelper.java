@@ -53,6 +53,7 @@ public class DbHelper {
     public static final String KEY_SEX = "userSex";
     public static final String KEY_USER_TYPE = "userType";
     public static final String KEY_USER_COURSE_SCORE = "userCourseScore";
+    public static final String KEY_USER_COLLEGE = "userCollege";
 
     /**
      * 课程的名称(这里的课程  指的是教师上传的课程名称)
@@ -82,7 +83,6 @@ public class DbHelper {
 
     /**
      * 课程表
-     *
      */
     public static final String KEY_COURSE_TEACHER_ID = "teacherId";
     public static final String KEY_COURSE_TEACHER_COURSE_STEP = "courseStep";
@@ -96,10 +96,10 @@ public class DbHelper {
      */
     private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_USER_TABLE + " (" + KEY_ID + " integer primary key autoincrement, " +
             KEY_NAME + " text not null, " + KEY_PWD + " text not null, " + KEY_NUMBER + " text not null, " + KEY_SEX + " integer, " + KEY_HEAD_URL + " text, " +
-            KEY_USER_TYPE + " integer, " + KEY_USER_COURSE_SCORE + " float);";
+            KEY_USER_COLLEGE + " text, " + KEY_USER_TYPE + " integer, " + KEY_USER_COURSE_SCORE + " float);";
 
     private static final String CREATE_COURSE_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_TABLE + " (" + KEY_COURSE_ID + " integer primary key autoincrement, " +
-            KEY_COURSE_NAME + " text not null, " + KEY_COURSE_TEACHER_NAME + " text not null, " + KEY_COURSE_ADDR + " text not null, " + KEY_COURSE_WEEKLIST + " text not null, "+
+            KEY_COURSE_NAME + " text not null, " + KEY_COURSE_TEACHER_NAME + " text not null, " + KEY_COURSE_ADDR + " text not null, " + KEY_COURSE_WEEKLIST + " text not null, " +
             KEY_COURSE_START + " integer, " + KEY_COURSE_STEP + " integer, " + KEY_COURSE_DAY + " integer, " + KEY_COURSE_TERM + " text, " + KEY_COURSE_COLORRANDOM + " integer, " +
             KEY_COURSE_STU_NUM + " integer, " + KEY_COURSE_NUM + " integer, " + KEY_COURSE_SCORE + " float, " + KEY_COURSE_COURSE_ID + " integer);";
 
@@ -207,7 +207,7 @@ public class DbHelper {
 
 
     /**
-     * 新增用户
+     * 新增用户,防止重复
      *
      * @param user
      * @return
@@ -216,13 +216,21 @@ public class DbHelper {
         long result = -1;
         mDb.beginTransaction();
         try {
-            ContentValues userValue = new ContentValues();
-            userValue.put(KEY_NAME, user.getUserName());
-            userValue.put(KEY_PWD, user.getUserPwd());
-            userValue.put(KEY_NUMBER, user.getUserNumber());
-            userValue.put(KEY_SEX, user.getUserSex());
-            userValue.put(KEY_USER_TYPE, user.getUserType());
-            result = mDb.insert(DATABASE_USER_TABLE, null, userValue);
+
+            if (queryUserByNumber(user.getUserNumber())) {  // 包含该用户
+                result = -2;
+            } else {
+                // insert or ignore into table_name (id,type) values (2,0);
+                ContentValues userValue = new ContentValues();
+                userValue.put(KEY_NAME, user.getUserName());
+                userValue.put(KEY_PWD, user.getUserPwd());
+                userValue.put(KEY_NUMBER, user.getUserNumber());
+                userValue.put(KEY_SEX, user.getUserSex());
+                userValue.put(KEY_USER_TYPE, user.getUserType());
+
+                result = mDb.insert(DATABASE_USER_TABLE, null, userValue);
+            }
+
             Log.e(TAG, "insertUser: result==" + result);
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
@@ -230,6 +238,29 @@ public class DbHelper {
             mDb.endTransaction();
         }
         return result;
+    }
+
+    /**
+     * 根据学号判断是否已经存在该用户
+     *
+     * @param userNumber
+     * @return
+     */
+    public boolean queryUserByNumber(String userNumber) {
+        boolean isHave = false;
+        Cursor cursor;
+        String sql = "select * from " + DATABASE_USER_TABLE + " where " + KEY_NUMBER + "= ? ";
+        cursor = mDb.rawQuery(sql, new String[]{userNumber});
+//            cursor = mDb.query(DATABASE_USER_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PWD, KEY_PWD_HELP},
+//                    KEY_NAME + "= ? and " + KEY_PWD + " = ?", new String[]{userName, userPwd},
+//                    null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                isHave = true;
+            }
+            cursor.close();
+        }
+        return isHave;
     }
 
     /**
@@ -381,7 +412,7 @@ public class DbHelper {
         mDb.beginTransaction();
         try {
             result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_USER_ID + "=?", new String[]{String.valueOf(userId)});
-            if (result>=0){
+            if (result >= 0) {
                 result = mDb.delete(DATABASE_USER_TABLE, KEY_ID + "=?", new String[]{String.valueOf(userId)});
             }
             mDb.setTransactionSuccessful();
@@ -405,21 +436,22 @@ public class DbHelper {
         Log.e(TAG, "updateUser: use==" + user.toString());
         ContentValues userValue = new ContentValues();
         userValue.put(KEY_NAME, user.getUserName());
-        userValue.put(KEY_PWD, user.getUserPwd());
-//        result = mDb.update(DATABASE_USER_TABLE, userValue, KEY_NAME+" =? and " + KEY_PWD_HELP + "=? and " + KEY_ID + "=?" ,
-//                new String[]{user.getUserName(), user.getPwdHelp(), String.valueOf(user.getUserID())});
+        userValue.put(KEY_SEX, user.getUserSex());
+        userValue.put(KEY_USER_COLLEGE, user.getCollege());
+        result = mDb.update(DATABASE_USER_TABLE, userValue, KEY_NUMBER + " =?",
+                new String[]{user.getUserNumber()});
         Log.e(TAG, "updateUser: result==" + result);
         return result;
     }
 
     /**
-     * 获取所有注册学生信息
+     * 获取所有注册学生和教师信息
      *
      * @return
      */
-    public List<User> queryUsers(int userType) {
+    public List<User> queryUsers() {
         List<User> userList = new ArrayList<>();
-        Cursor cursor = mDb.query(DATABASE_USER_TABLE, null, KEY_USER_TYPE + "=?", new String[]{String.valueOf(userType)}, null, null, null, null);
+        Cursor cursor = mDb.query(DATABASE_USER_TABLE, null, KEY_USER_TYPE + "=? or " + KEY_USER_TYPE + "=?", new String[]{String.valueOf(0), String.valueOf(2)}, null, null, null, null);
         while (cursor.moveToNext()) {
             User user = new User();
             setUser(user, cursor);
@@ -437,7 +469,7 @@ public class DbHelper {
     public List<User> queryUsersByCourseId(int teacherId) {
         List<User> userList = new ArrayList<>();
         Cursor cursorTeacher = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_TEACHER_ID + "=?", new String[]{String.valueOf(teacherId)}, null, null, null);
-        if (cursorTeacher.moveToFirst()){
+        if (cursorTeacher.moveToFirst()) {
             int courseId = cursorTeacher.getInt(cursorTeacher.getColumnIndex(KEY_ID));
             //学科学分
             float courseScore = cursorTeacher.getFloat(cursorTeacher.getColumnIndex(KEY_COURSE_TEACHER_COURSE_SCORE));
@@ -520,15 +552,13 @@ public class DbHelper {
     }
 
     /**
-     *
-     *
      * @param midId
      * @param courseId
      * @param userId
      * @param courseMark
      * @return
      */
-    public long updateCourseUserMark(int midId, int courseId, int userId, float courseMark){
+    public long updateCourseUserMark(int midId, int courseId, int userId, float courseMark) {
         long result = -1;
         mDb.beginTransaction();
         try {
@@ -569,7 +599,7 @@ public class DbHelper {
         mDb.beginTransaction();
         try {
             Cursor cursor = mDb.query(DATABASE_COURSE_USER_TABLE, null, KEY_COURSE_USER_USER_ID + "=? and " + KEY_COURSE_USER_COURSE_ID,
-                    new String[]{String.valueOf(userId), String.valueOf(courseId)},null, null, null, null);
+                    new String[]{String.valueOf(userId), String.valueOf(courseId)}, null, null, null, null);
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
@@ -585,7 +615,7 @@ public class DbHelper {
      */
     public int queryCourseIsApply(int userId, int courseId) {
         Cursor cursor = mDb.query(DATABASE_COURSE_USER_TABLE, null, KEY_COURSE_USER_USER_ID + "=? and " + KEY_COURSE_USER_COURSE_ID + "=?",
-                new String[]{String.valueOf(userId), String.valueOf(courseId)},null, null, null, null);
+                new String[]{String.valueOf(userId), String.valueOf(courseId)}, null, null, null, null);
         int count = cursor.getCount();
         cursor.close();
         return count;
@@ -603,7 +633,7 @@ public class DbHelper {
         while (cursor.moveToNext()) {
             int courseId = cursor.getInt(cursor.getColumnIndex(KEY_COURSE_USER_COURSE_ID));
             CourseTeacherBean courseTeacherBean = queryCourseTeacherById(courseId);
-            CourseUserBean  courseUserBean = new CourseUserBean();
+            CourseUserBean courseUserBean = new CourseUserBean();
             courseUserBean.setMidId(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_USER_ID)));
             courseUserBean.setId(courseId);
             courseUserBean.setName(courseTeacherBean.getCourseName());
@@ -645,7 +675,7 @@ public class DbHelper {
         mDb.beginTransaction();
         try {
             result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_COURSE_ID + "=?", new String[]{String.valueOf(courseId)});
-            if (result>=0){
+            if (result >= 0) {
                 result = mDb.delete(DATABASE_COURSE_TABLE, KEY_COURSE_COURSE_ID + "=?", new String[]{String.valueOf(courseId)});
             }
             mDb.setTransactionSuccessful();
@@ -711,8 +741,9 @@ public class DbHelper {
         mySubject.setRoom(cursor.getString(cursor.getColumnIndex(KEY_COURSE_ADDR)));
         String weekListStr = cursor.getString(cursor.getColumnIndex(KEY_COURSE_WEEKLIST));
         List<Integer> weekList = new ArrayList<>();
-        if (!RxDataTool.isEmpty(weekListStr)){
-            weekList.addAll(new Gson().fromJson(weekListStr, new TypeToken<List<Integer>>(){}.getType()));
+        if (!RxDataTool.isEmpty(weekListStr)) {
+            weekList.addAll(new Gson().fromJson(weekListStr, new TypeToken<List<Integer>>() {
+            }.getType()));
         }
         mySubject.setWeekList(weekList);
         mySubject.setTerm(cursor.getString(cursor.getColumnIndex(KEY_COURSE_TERM)));
@@ -838,7 +869,7 @@ public class DbHelper {
     public List<MySubject> queryTeacherCourses(int teacherId) {
         List<MySubject> mySubjectList = new ArrayList<>();
         Cursor cursorTeacher = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_TEACHER_ID + "=?", new String[]{String.valueOf(teacherId)}, null, null, null);
-        if (cursorTeacher.moveToFirst()){
+        if (cursorTeacher.moveToFirst()) {
             int courseId = cursorTeacher.getInt(cursorTeacher.getColumnIndex(KEY_ID));
             List<MySubject> mySubjectListTmp = queryCourses(courseId);
             mySubjectList.addAll(mySubjectListTmp);
@@ -878,12 +909,11 @@ public class DbHelper {
             Log.i(TAG, "querySelectedScore: ");
             CourseTeacherBean courseTeacherBean = queryCourseTeacherById(courseId);
             Log.i(TAG, "querySelectedScore: courseTeacherBean==" + courseTeacherBean.toString());
-            score+=courseTeacherBean.getCourseScore();
+            score += courseTeacherBean.getCourseScore();
         }
         cursorUser.close();
         return score;
     }
-
 
 
     /**
@@ -1010,7 +1040,7 @@ public class DbHelper {
             cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, null, null, null, null, null);
         }
         if (cursor != null) {
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 CourseTeacherBean courseTeacherBean = setCourseTeacher(cursor);
                 if (courseTeacherBean != null) {
                     courseTeacherBeanList.add(courseTeacherBean);

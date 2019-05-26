@@ -34,6 +34,23 @@ public class User implements Serializable {
     private int userType;
 
     /**
+     * 学院名称
+     */
+    private String college;
+
+    private CourseTeacherBean courseTeacherBean;
+
+    public User() {
+    }
+
+    public User(String userName, String userPwd, String userNumber, int userType) {
+        this.userName = userName;
+        this.userPwd = userPwd;
+        this.userNumber = userNumber;
+        this.userType = userType;
+    }
+
+    /**
      * 用户的头像
      *
      */
@@ -81,6 +98,14 @@ public class User implements Serializable {
         return userSex;
     }
 
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
     public void setUserSex(int userSex) {
         this.userSex = userSex;
     }
@@ -95,6 +120,14 @@ public class User implements Serializable {
 
     public void setUserType(int userType) {
         this.userType = userType;
+    }
+
+    public CourseTeacherBean getCourseTeacherBean() {
+        return courseTeacherBean;
+    }
+
+    public void setCourseTeacherBean(CourseTeacherBean courseTeacherBean) {
+        this.courseTeacherBean = courseTeacherBean;
     }
 
     public List<CourseUserBean> getUserCourses() {

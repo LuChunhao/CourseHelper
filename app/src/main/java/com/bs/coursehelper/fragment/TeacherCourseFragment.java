@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bs.coursehelper.Constants;
@@ -148,6 +149,7 @@ public class TeacherCourseFragment extends BaseFragment {
         EditText idEtCourseStuNum = dialogView.findViewById(R.id.id_et_course_stu_num);
         EditText idEtCourseNum = dialogView.findViewById(R.id.id_et_course_num);
         EditText idEtCourseScore = dialogView.findViewById(R.id.id_et_course_score);
+        Switch switch_cengke = dialogView.findViewById(R.id.switch_cengke);
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext)
                 .setView(dialogView)
                 .setPositiveButton("保存", null).setNegativeButton("放弃", null)
@@ -176,7 +178,8 @@ public class TeacherCourseFragment extends BaseFragment {
                     return;
                 }
 
-                int step = Integer.parseInt(courseNum);
+                //int step = Integer.parseInt(courseNum);
+                int step = 1;
                 if (RxDataTool.isEmpty(courseNum)) {
                     RxToast.normal("课程节数不能为空！！！");
                     mActivity.handleEtEmpty(idEtCourseNum);
@@ -199,6 +202,8 @@ public class TeacherCourseFragment extends BaseFragment {
                 courseTeacherBean.setCourseMax(Integer.parseInt(courseStuNum));
                 courseTeacherBean.setCourseStep(step);
                 courseTeacherBean.setCourseScore(Float.parseFloat(courseScore));
+                courseTeacherBean.setIsAllowCengKe(switch_cengke.isChecked() ? 1 : 0);
+
                 Observable.just(mDbHelper.insertCourseTeacher(courseTeacherBean))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

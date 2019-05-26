@@ -257,8 +257,8 @@ public class TeacherCourseListActivity extends BaseActivity {
                             .curWeek(weekDiff)
                             .curTerm("大一下学期")
                             .isShowNotCurWeek(true)
-                            .maxSlideItem(10)//按照一天10节课来计算，选修课 会根据其他的课程来安排的
-                            .monthWidthDp(40)
+                            .maxSlideItem(4)//按照一天10节课来计算，选修课 会根据其他的课程来安排的
+                            .monthWidthDp(80)
                             //透明度
                             //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                             //透明度范围为0->1，0为全透明，1为不透明

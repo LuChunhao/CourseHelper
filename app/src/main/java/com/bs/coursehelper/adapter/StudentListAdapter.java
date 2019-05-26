@@ -67,17 +67,33 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
             holder.idCivStuHead.setImageURI(Uri.parse(uriStr));
         }
         holder.idTvStuName.setText(user.getUserName());
-        RxTextTool.getBuilder("已修课程门数：")
-                .append(String.valueOf(user.getUserCourses().size()))
-                .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
-                .setProportion(1.8f)
-                .into(holder.idTvStuCourseNum);
+        if (user.getUserType() == 2) {  // 老师
+            String courseName;
+            if (null != user.getCourseTeacherBean() && !TextUtils.isEmpty(user.getCourseTeacherBean().getCourseName())) {
+                courseName = user.getCourseTeacherBean().getCourseName();
+            } else {
+                courseName = "暂未新建课程";
+            }
+            RxTextTool.getBuilder("课程名称：")
+                    .append(courseName)
+                    .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
+                    .setProportion(1.8f)
+                    .into(holder.idTvStuCourseNum);
+            holder.idTvStuScore.setVisibility(View.GONE);
+        } else {
+            RxTextTool.getBuilder("已修课程门数：")
+                    .append(String.valueOf(user.getUserCourses().size()))
+                    .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
+                    .setProportion(1.8f)
+                    .into(holder.idTvStuCourseNum);
+            holder.idTvStuScore.setVisibility(View.VISIBLE);
+            RxTextTool.getBuilder("已修课程学分：")
+                    .append(String.valueOf(user.getUserCourseScore()))
+                    .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
+                    .setProportion(1.8f)
+                    .into(holder.idTvStuScore);
+        }
 
-        RxTextTool.getBuilder("已修课程学分：")
-                .append(String.valueOf(user.getUserCourseScore()))
-                .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
-                .setProportion(1.8f)
-                .into(holder.idTvStuScore);
         holder.idClStuList.setOnClickListener(view -> {
             if (mIRVOnItemListener != null) {
                 mIRVOnItemListener.onItemClick(user, position);

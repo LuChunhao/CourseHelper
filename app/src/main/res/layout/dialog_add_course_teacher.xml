@@ -42,8 +42,8 @@
         android:id="@+id/id_v_line_course"
         style="@style/style_v_line_login"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_15"
         app:layout_constraintLeft_toLeftOf="@id/id_et_course_name"
         app:layout_constraintTop_toBottomOf="@id/id_et_course_name" />
 
@@ -87,8 +87,8 @@
         android:id="@+id/id_v_line_course_stu_num"
         style="@style/style_v_line_login"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_15"
         app:layout_constraintLeft_toLeftOf="@id/id_et_course_stu_num"
         app:layout_constraintTop_toBottomOf="@id/id_et_course_stu_num" />
 
@@ -99,6 +99,7 @@
         android:layout_marginLeft="@dimen/dp_5"
         android:layout_marginTop="@dimen/dp_5"
         android:padding="@dimen/dp_5"
+        android:visibility="gone"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_stu_num_max"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -111,6 +112,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:text="课程节数"
         android:textSize="@dimen/text_15"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/id_iv_course_num"
         app:layout_constraintLeft_toRightOf="@id/id_iv_course_num"
         app:layout_constraintTop_toTopOf="@id/id_iv_course_num" />
@@ -123,6 +125,7 @@
         android:layout_marginTop="@dimen/dp_5"
         android:background="@null"
         android:hint="请输入课程节数"
+        android:visibility="gone"
         android:inputType="number"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/id_iv_course_num" />
@@ -130,9 +133,10 @@
     <View
         android:id="@+id/id_v_line_course_num"
         style="@style/style_v_line_login"
+        android:visibility="gone"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_15"
         app:layout_constraintLeft_toLeftOf="@id/id_et_course_num"
         app:layout_constraintTop_toBottomOf="@id/id_et_course_num" />
 
@@ -175,9 +179,53 @@
         android:id="@+id/id_v_line_course_score"
         style="@style/style_v_line_login"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_15"
         app:layout_constraintLeft_toLeftOf="@id/id_et_course_score"
         app:layout_constraintTop_toBottomOf="@id/id_et_course_score" />
+
+    <View
+        android:id="@+id/id_v_line_course_cengke"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_15"
+        app:layout_constraintLeft_toLeftOf="@id/id_et_course_score"
+        app:layout_constraintTop_toBottomOf="@id/id_et_course_score" />
+
+    <ImageView
+        android:id="@+id/iv_cursor_cengke"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_course_score"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_course_cengke" />
+
+    <TextView
+        android:id="@+id/tv_course_cengke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="是否允许蹭课"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cursor_cengke"
+        app:layout_constraintLeft_toRightOf="@id/iv_cursor_cengke"
+        app:layout_constraintTop_toTopOf="@id/iv_cursor_cengke" />
+
+    <Switch
+        android:id="@+id/switch_cengke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cursor_cengke"
+        app:layout_constraintLeft_toRightOf="@id/tv_course_cengke"
+        app:layout_constraintTop_toTopOf="@id/iv_cursor_cengke" />
+
+
+
 
 </android.support.constraint.ConstraintLayout>

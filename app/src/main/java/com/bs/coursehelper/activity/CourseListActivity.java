@@ -181,9 +181,7 @@ public class CourseListActivity extends BaseActivity {
      */
     protected void showTime() {
         String[] times = new String[]{
-                "8:00", "9:00", "10:10", "11:00",
-                "13:30", "14:30", "15:40", "16:40",
-                "19:00", "20:00"
+                "8:00", "10:00", "14:00", "16:00"
         };
         OnSlideBuildAdapter listener = (OnSlideBuildAdapter) idTvCourseList.onSlideBuildListener();
         listener.setTimes(times)
@@ -536,8 +534,8 @@ public class CourseListActivity extends BaseActivity {
                             .curTerm("大一下学期")
                             .itemHeight(120)
                             .isShowNotCurWeek(true)
-                            .maxSlideItem(10)//按照一天10节课来计算，选修课 会根据其他的课程来安排的
-                            .monthWidthDp(40)
+                            .maxSlideItem(4)//按照一天10节课来计算，选修课 会根据其他的课程来安排的
+                            .monthWidthDp(80)
                             //透明度
                             //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                             //透明度范围为0->1，0为全透明，1为不透明
@@ -600,7 +598,7 @@ public class CourseListActivity extends BaseActivity {
                 (dialogInterface, i) -> selectedCourseIndex = i)
                 .setPositiveButton("发布当前课程", (dialog, which) -> {
                     Log.i(TAG, "getCourseList: which==" + selectedCourseIndex);
-                    if (selectedCourseIndex == -1){
+                    if (selectedCourseIndex == -1) {
                         RxToast.normal("请先选择要发布的课程");
                         return;
                     }

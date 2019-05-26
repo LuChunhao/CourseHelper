@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.vondear.rxui.view.RxTitle
         android:id="@+id/id_rt_title"
@@ -142,15 +143,41 @@
         style="@style/style_v_line_login"
         app:layout_constraintTop_toBottomOf="@id/id_tv_role_desc" />
 
+    <ImageView
+        android:id="@+id/iv_icon_user_college"
+        style="@style/style_left_icon_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:src="@mipmap/icon_user"
+        app:layout_constraintBottom_toBottomOf="@id/et_user_college"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_user_college" />
+
+    <EditText
+        android:id="@+id/et_user_college"
+        style="@style/style_et_account_login"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_30"
+        android:gravity="right"
+        android:hint="请输入学院名称"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/iv_icon_user_college"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_rg_role" />
+
+    <View
+        android:id="@+id/id_v_line_user_college"
+        style="@style/style_v_line_login"
+        app:layout_constraintTop_toBottomOf="@id/iv_icon_user_college" />
+
     <Button
         android:id="@+id/id_btn_save"
         style="@style/style_btn_login"
-        android:layout_marginTop="@dimen/dp_50"
         android:background="@drawable/shape_bg_btn_login"
+        android:layout_marginTop="20dp"
         android:text="保 存"
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_tv_role_desc" />
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_user_college" />
 
 </android.support.constraint.ConstraintLayout>

@@ -68,20 +68,20 @@ public class MainActivity extends BaseActivity {
     protected void initData() {
         String userInfo = (String) SPUtil.getInstanse().getParam(Constants.USER_LOCAL_INFO, "");
         //默认是学生
-        userType = 0 ;
-        if (!TextUtils.isEmpty(userInfo)){
+        userType = 0;
+        if (!TextUtils.isEmpty(userInfo)) {
             User user = new Gson().fromJson(userInfo, User.class);
             userType = user.getUserType();
         }
         setTabs();
         List<BaseFragment> fragmentList = new ArrayList<>();
-        if (userType==0){
+        if (userType == 0) {
             fragmentList.add(new HomeFragment());
             fragmentList.add(new MyCourseFragment());
-        }else if (userType==1){
+        } else if (userType == 1) {
             fragmentList.add(new AdminCourseFragment());
             fragmentList.add(new AdminStuFragment());
-        }else if (userType==2){
+        } else if (userType == 2) {
             fragmentList.add(new TeacherCourseFragment());
             fragmentList.add(new TeacherStuFragment());
         }
@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         String[] tabTitles = mContext.getResources().getStringArray(R.array.text_main_tab);
 
-        if (userType==1 || userType == 2){
+        if (userType == 1 || userType == 2) {
             typedArray = mContext.getResources().obtainTypedArray(R.array.int_admin_main_tab);
             tabTitles = mContext.getResources().getStringArray(R.array.text_admin_main_tab);
         }

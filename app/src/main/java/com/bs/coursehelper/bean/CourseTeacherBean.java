@@ -57,6 +57,19 @@ public class CourseTeacherBean {
      */
     private int courseStep;
 
+    /**
+     * 是否允许蹭课，1 允许 0 不允许
+     */
+    private int isAllowCengKe;
+
+    public int getIsAllowCengKe() {
+        return isAllowCengKe;
+    }
+
+    public void setIsAllowCengKe(int isAllowCengKe) {
+        this.isAllowCengKe = isAllowCengKe;
+    }
+
     public int getId() {
         return id;
     }

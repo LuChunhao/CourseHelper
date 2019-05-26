@@ -43,6 +43,8 @@ public class AdminInfoActivity extends BaseActivity {
     RadioButton idRbRoleStudent;
     @BindView(R.id.id_rb_role_teacher)
     RadioButton idRbRoleTeacher;
+    @BindView(R.id.et_user_college)
+    EditText etUserCollege;
 
     private User user;
 
@@ -57,6 +59,7 @@ public class AdminInfoActivity extends BaseActivity {
         user = new Gson().fromJson(userInfo, User.class);
         idEtUserAccount.setText(user.getUserName());
         idEtUserNumber.setText(user.getUserNumber());
+        etUserCollege.setText(user.getCollege());
         int sex = user.getUserSex();
         if (sex==0){
             idRbRoleStudent.setChecked(true);
@@ -96,38 +99,54 @@ public class AdminInfoActivity extends BaseActivity {
     public void onClick() {
 
         String name = idEtUserAccount.getText().toString().trim();
+        String college = etUserCollege.getText().toString().trim();
         if (RxDataTool.isEmpty(name)) {
             RxToast.normal("用户姓名不能为空！！！");
             mActivity.handleEtEmpty(idEtUserAccount);
             return;
         }
         user.setUserName(name);
-        Observable.just(isExistName(name, user.getUserNumber()))
-                .map(integer -> {
-                    long isSucess = -1;
-                    if (integer==0){
-                        try {
-                            isSucess = DbHelper.getInstance().updateUserInfo(user);
-                        } catch (SQLiteException sqLiteException) {
-                            isSucess = -1;
-                            sqLiteException.printStackTrace();
-                        }
-                    }else if (integer==1){
-                        isSucess = -2;
-                    }
-                    return isSucess;
-                })
+        user.setCollege(college);
+//        Observable.just(isExistName(name, user.getUserNumber()))
+//                .map(integer -> {
+//                    long isSucess = -1;
+//                    if (integer==0){
+//                        try {
+//                            isSucess = DbHelper.getInstance().updateUserInfo(user);
+//                        } catch (SQLiteException sqLiteException) {
+//                            isSucess = -1;
+//                            sqLiteException.printStackTrace();
+//                        }
+//                    }else if (integer==1){
+//                        isSucess = -2;
+//                    }
+//                    return isSucess;
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(aLong -> {
+//                    if (aLong >= 0) {
+//                        RxToast.normal("用户信息修改成功！");
+//                        mActivity.finish();
+//                    }else{
+//                        if (aLong==-2){
+//                            RxToast.normal("该用户已存在！！！");
+//                            return;
+//                        }
+//                        RxToast.normal("用户信息修改失败！");
+//                    }
+//                });
+
+        Observable.just(DbHelper.getInstance().updateUserInfo(user))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     if (aLong >= 0) {
                         RxToast.normal("用户信息修改成功！");
+                        String userInfo = new Gson().toJson(user);
+                        SPUtil.getInstanse().setParam(Constants.USER_LOCAL_INFO, userInfo);
                         mActivity.finish();
                     }else{
-                        if (aLong==-2){
-                            RxToast.normal("该用户已存在！！！");
-                            return;
-                        }
                         RxToast.normal("用户信息修改失败！");
                     }
                 });

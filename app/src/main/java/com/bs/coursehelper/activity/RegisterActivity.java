@@ -84,12 +84,12 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void initView() {
         idRgRole.setOnCheckedChangeListener((radioGroup, i) -> {
-            switch (radioGroup.getCheckedRadioButtonId()){
+            switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.id_rb_role_student:
-                    userType = 0 ;
+                    userType = 0;
                     break;
                 case R.id.id_rb_role_teacher:
-                    userType = 1 ;
+                    userType = 2;
                     break;
             }
         });
@@ -160,18 +160,18 @@ public class RegisterActivity extends BaseActivity {
 
 
                 //55 是管理员的工号开头  学号不是的,  66是教师的
-                if (userType == 1 && !usernumber.startsWith("55") && !usernumber.startsWith("66")){
-                    RxToast.normal("学生不能注册管理员...");
-                    return;
-                }else if ((usernumber.startsWith("55")  || usernumber.startsWith("66")) && userType == 0){
-                    RxToast.normal("学号有误，请重新输入...");
-                    return;
-                }
-                if (usernumber.startsWith("55")){
-                    userType = 1;
-                }else if (usernumber.startsWith("66")){
-                    userType = 2;
-                }
+//                if (userType == 1 && !usernumber.startsWith("55") && !usernumber.startsWith("66")){
+//                    RxToast.normal("学生不能注册管理员...");
+//                    return;
+//                }else if ((usernumber.startsWith("55")  || usernumber.startsWith("66")) && userType == 0){
+//                    RxToast.normal("学号有误，请重新输入...");
+//                    return;
+//                }
+//                if (usernumber.startsWith("55")){
+//                    userType = 1;
+//                }else if (usernumber.startsWith("66")){
+//                    userType = 2;
+//                }
                 Log.i(TAG, "onClick: 用户的类型  userType==" + userType);
                 user[0].setUserType(userType);
 
@@ -179,51 +179,18 @@ public class RegisterActivity extends BaseActivity {
                 ProgressDialogHelper progressDialogHelper = new ProgressDialogHelper(mContext);
                 progressDialogHelper.show("注册", "正在注册中...");
                 RxKeyboardTool.hideSoftInput(mActivity);
-                Map<String, String> params = new HashMap<>();
-                params.put("userName", userName);
-                params.put("userNumber", usernumber);
-                OkGoUtil.getRequets(Constants.IS_EXIST_USER_URL, mActivity, params, new JsonCallback<ResponseBean<User>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<User>> response) {
-                        Log.i(TAG, "onSuccess: response.body().Result==" + response.body().data);
-                        int code = response.body().code;
-                        if (code == 200){
-                            //查询成功，该用户存在
-                            RxToast.normal(response.body().msg);
-                        }else if (code == 220){
-                            //该账户不存在，可以注册
-                            params.put("userNumber", usernumber);
-                            params.put("userNumber", usernumber);
-                            OkGoUtil.getRequets(Constants.INSERT_USER_URL, mActivity, params, new JsonCallback<ResponseBean<User>>() {
-                                @Override
-                                public void onSuccess(Response<ResponseBean<User>> response) {
-                                    Log.i(TAG, "onSuccess: response.body().Result==" + response.body().data);
-                                    int code = response.body().code;
-                                    if (code == 200){
-                                        //查询成功，该用户存在
-                                        RxToast.normal(response.body().msg);
-                                    }else if (code == 220){
-                                        //该账户不存在，可以注册
-                                    }
 
-                                }
-                            });
-                        }
-
-                    }
-                });
                 Observable.just(0)
                         .map(integer -> {
                             long isSucess = -1;
                             Log.i(TAG, "onClick: integer==" + integer);
-                            if (integer==0){
+                            if (integer == 0) {
                                 try {
                                     isSucess = dbHelper.insertUser(user[0]);
                                 } catch (SQLiteException sqLiteException) {
-                                    isSucess = -1;
                                     sqLiteException.printStackTrace();
                                 }
-                            }else if (integer==1){
+                            } else if (integer == 1) {
                                 isSucess = -2;
                             }
                             return isSucess;
@@ -234,9 +201,10 @@ public class RegisterActivity extends BaseActivity {
                             progressDialogHelper.dismiss();
                             if (o >= 0) {
                                 RxToast.normal("注册成功！");
+                                setResult(RESULT_OK);
                                 finish();
-                            }else{
-                                if (o==-2){
+                            } else {
+                                if (o == -2) {
                                     RxToast.normal("该用户已存在！！！");
                                     return;
                                 }
@@ -253,7 +221,7 @@ public class RegisterActivity extends BaseActivity {
      * @param name
      * @return
      */
-    private int isExistName(String name, String number){
+    private int isExistName(String name, String number) {
         User user = DbHelper.getInstance().queryUserIsExist(name, number);
         int result = 0;
         try {

@@ -134,6 +134,7 @@
                 style="@style/style_btn_login"
                 android:background="@drawable/shape_bg_btn_register"
                 android:text="注 册"
+                android:visibility="gone"
                 android:textColor="@color/tb_blue3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
