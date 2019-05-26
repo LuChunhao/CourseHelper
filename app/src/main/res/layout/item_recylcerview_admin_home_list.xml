@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_cl_home_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="@dimen/dp_5"
+    android:paddingLeft="@dimen/dp_5"
+    android:paddingRight="@dimen/dp_5">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/id_civ_teacher_head"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:src="@mipmap/ic_head_default"
+        app:civ_border_color="@color/blue_powder"
+        app:civ_border_width="@dimen/dp_1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/id_tv_student_num"
+        app:layout_constraintTop_toTopOf="@id/id_tv_course_name" />
+
+
+    <TextView
+        android:id="@+id/id_tv_course_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:text="课程名称"
+        android:textColor="@color/light_black"
+        android:textSize="@dimen/text_16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/id_civ_teacher_head"/>
+
+
+    <TextView
+        android:id="@+id/id_tv_teacher_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_5"
+        android:text="张三"
+        android:textSize="@dimen/text_12"
+        app:layout_constraintTop_toBottomOf="@id/id_tv_course_name"
+        app:layout_constraintLeft_toLeftOf="@id/id_tv_course_name"/>
+
+
+    <TextView
+        android:id="@+id/id_tv_student_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_5"
+        android:gravity="center"
+        android:text="报名人数：10"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/text_10"
+        app:layout_constraintTop_toBottomOf="@id/id_tv_teacher_name"
+        app:layout_constraintLeft_toLeftOf="@id/id_tv_course_name"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/tb_gray1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_tv_student_num" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:padding="@dimen/dp_15"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/id_tv_stu_score_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_5"
+        android:text="评分"
+        android:textSize="@dimen/text_16" />
+
+    <com.bs.coursehelper.widget.MSeekBar
+        android:id="@+id/id_msb_stu_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/bg_seekbar_progress_drawable"
+        android:thumb="@mipmap/icon_seekbar_thumb"
+        app:layout_constraintTop_toBottomOf="@id/id_tv_stu_score_desc"
+        app:textBackground="@mipmap/bg_seekbar_display"
+        app:textColor="@color/white"
+        app:textOrientation="top"
+        app:textSize="@dimen/text_14" />
+
+</android.support.constraint.ConstraintLayout>

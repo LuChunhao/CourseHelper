@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_cl_root_login"
+    style="@style/style_cl_common">
+
+    <ImageView
+        android:id="@+id/id_iv_login_logo"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginTop="@dimen/dp_80"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/app_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/id_nsv_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@android:color/transparent"
+        android:scrollbars="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_login_logo">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/id_cl_content_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_50"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:id="@+id/id_iv_icon_user"
+                style="@style/style_left_icon_login"
+                android:src="@mipmap/icon_user"
+                app:layout_constraintBottom_toBottomOf="@id/id_et_user_account"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/id_et_user_account" />
+
+            <EditText
+                android:id="@+id/id_et_user_account"
+                style="@style/style_et_account_login"
+                android:hint="请输入用户名"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/id_iv_icon_user"
+                app:layout_constraintRight_toLeftOf="@id/id_iv_clean_account"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/id_iv_clean_account"
+                style="@style/style_iv_clear_account_login"
+                app:layout_constraintBottom_toBottomOf="@id/id_et_user_account"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/id_et_user_account" />
+
+            <View
+                android:id="@+id/id_v_line_account"
+                style="@style/style_v_line_login"
+                app:layout_constraintTop_toBottomOf="@id/id_et_user_account" />
+
+            <ImageView
+                android:id="@+id/id_iv_icon_pwd"
+                style="@style/style_left_icon_login"
+                android:src="@mipmap/icon_pw"
+                app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+            <EditText
+                android:id="@+id/id_et_user_pwd"
+                style="@style/style_et_account_login"
+                android:layout_marginTop="@dimen/dp_15"
+                android:inputType="textPassword"
+                android:hint="请输入密码"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/id_iv_icon_pwd"
+                app:layout_constraintRight_toLeftOf="@id/id_iv_clean_pwd"
+                app:layout_constraintTop_toBottomOf="@id/id_v_line_account" />
+
+            <ImageView
+                android:id="@+id/id_iv_clean_pwd"
+                style="@style/style_iv_clear_account_login"
+                app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+                app:layout_constraintLeft_toRightOf="@id/id_et_user_pwd"
+                app:layout_constraintRight_toLeftOf="@id/id_cb_pwd"
+                app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+            <CheckBox
+                android:id="@+id/id_cb_pwd"
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_5"
+                android:background="@drawable/selector_pwd_login"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+                app:layout_constraintLeft_toRightOf="@id/id_iv_clean_pwd"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+            <View
+                android:id="@+id/id_v_line_pwd"
+                style="@style/style_v_line_login"
+                app:layout_constraintTop_toBottomOf="@id/id_et_user_pwd" />
+
+            <TextView
+                android:id="@+id/id_tv_forget_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/login_forget_pwd"
+                android:textColor="@color/forget_pwd"
+                android:textSize="@dimen/text_11"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/id_v_line_pwd" />
+
+            <Button
+                android:id="@+id/id_btn_login"
+                style="@style/style_btn_login"
+                android:text="登 录"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/id_tv_forget_pwd" />
+
+            <Button
+                android:id="@+id/id_btn_register"
+                style="@style/style_btn_login"
+                android:background="@drawable/shape_bg_btn_register"
+                android:text="注 册"
+                android:textColor="@color/tb_blue3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/id_btn_login" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

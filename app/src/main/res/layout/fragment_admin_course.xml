@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.vondear.rxui.view.RxTitle
+        android:id="@+id/id_rt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tb_blue3"
+        app:leftIconVisibility="false"
+        app:rightIcon="@mipmap/ic_course_add"
+        app:rightIconVisibility="true"
+        app:title="课程列表" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/id_rv_course_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <TextView
+        android:id="@+id/id_tv_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:text="暂无学生"
+        android:textSize="@dimen/text_22"
+        android:visibility="gone" />
+
+
+</LinearLayout>

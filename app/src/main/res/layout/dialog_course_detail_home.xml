@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/id_iv_course_desc"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_course_desc"
+        app:layout_constraintBottom_toTopOf="@id/id_et_course_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/id_tv_course_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="课程名称"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_course_desc"
+        app:layout_constraintLeft_toRightOf="@id/id_iv_course_desc"
+        app:layout_constraintTop_toTopOf="@id/id_iv_course_desc" />
+
+    <View
+        android:id="@+id/id_v_line_course"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="@id/id_iv_course_desc"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_course_desc" />
+
+    <ImageView
+        android:id="@+id/id_iv_course_teacher"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_head_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_course" />
+
+    <TextView
+        android:id="@+id/id_tv_course_teacher_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="授课教师"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_course_teacher"
+        app:layout_constraintLeft_toRightOf="@id/id_iv_course_teacher"
+        app:layout_constraintTop_toTopOf="@id/id_iv_course_teacher" />
+
+    <View
+        android:id="@+id/id_v_line_course_teacher"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="@id/id_iv_course_teacher"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_course_teacher" />
+
+    <ImageView
+        android:id="@+id/id_iv_course_addr"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/user_icon_addr"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_course_teacher" />
+
+    <TextView
+        android:id="@+id/id_tv_course_addr_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="授课地点"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_course_addr"
+        app:layout_constraintLeft_toRightOf="@id/id_iv_course_addr"
+        app:layout_constraintTop_toTopOf="@id/id_iv_course_addr" />
+
+    <View
+        android:id="@+id/id_v_line_course_addr"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="@id/id_iv_course_addr"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_course_addr" />
+
+    <ImageView
+        android:id="@+id/id_iv_course_stu_num"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_course_stu_num"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_course_addr" />
+
+    <TextView
+        android:id="@+id/id_tv_course_stu_num_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="报名人数"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_course_stu_num"
+        app:layout_constraintLeft_toRightOf="@id/id_iv_course_stu_num"
+        app:layout_constraintTop_toTopOf="@id/id_iv_course_stu_num" />
+
+    <View
+        android:id="@+id/id_v_line_course_stu_num"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="@id/id_iv_course_stu_num"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_course_stu_num" />
+
+    <ImageView
+        android:id="@+id/id_iv_course_score"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_course_score"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_v_line_course_stu_num" />
+
+    <TextView
+        android:id="@+id/id_tv_course_score_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="课程学分"
+        android:textSize="@dimen/text_15"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_course_score"
+        app:layout_constraintLeft_toRightOf="@id/id_iv_course_score"
+        app:layout_constraintTop_toTopOf="@id/id_iv_course_score" />
+
+    <View
+        android:id="@+id/id_v_line_course_score"
+        style="@style/style_v_line_login"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="@id/id_iv_course_score"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_course_score" />
+
+</android.support.constraint.ConstraintLayout>

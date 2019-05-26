@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_cl_mine"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/id_iv_top_bg_mine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_160"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_mine_top"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/id_cir_mine"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_20"
+        android:padding="@dimen/dp_1"
+        android:src="@mipmap/head_user_default"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="@dimen/dp_1"
+        app:layout_constraintBottom_toBottomOf="@id/id_iv_top_bg_mine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/id_iv_top_bg_mine" />
+
+    <TextView
+        android:id="@+id/id_tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:padding="@dimen/dp_3"
+        android:text="用户名字"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/id_tv_user_phone"
+        app:layout_constraintLeft_toRightOf="@id/id_cir_mine"
+        app:layout_constraintTop_toTopOf="@id/id_cir_mine" />
+
+    <TextView
+        android:id="@+id/id_tv_user_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_3"
+        android:text="15210000011"
+        android:textColor="@color/tb_gray2"
+        android:textSize="@dimen/text_10"
+        app:layout_constraintBottom_toBottomOf="@id/id_cir_mine"
+        app:layout_constraintLeft_toLeftOf="@id/id_tv_user_name"
+        app:layout_constraintTop_toBottomOf="@id/id_tv_user_name" />
+
+    <ImageView
+        android:id="@+id/id_iv_user_sex"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_1"
+        android:src="@mipmap/icon_male"
+        app:layout_constraintBottom_toBottomOf="@id/id_tv_user_name"
+        app:layout_constraintLeft_toRightOf="@id/id_tv_user_name"
+        app:layout_constraintTop_toTopOf="@id/id_tv_user_name" />
+
+
+    <ImageView
+        android:id="@+id/id_iv_mine_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_30"
+        android:src="@mipmap/mine_divider"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_top_bg_mine" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/id_rv_mine"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_30"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_iv_mine_divider"
+        app:layout_constraintVertical_weight="1">
+
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/id_tv_login_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bg_btn_register"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_10"
+        android:text="退出登录"
+        android:textColor="@color/tb_blue1"
+        android:textSize="@dimen/text_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_rv_mine" />
+
+
+</android.support.constraint.ConstraintLayout>

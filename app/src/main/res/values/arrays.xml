@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="int_welcome">
+        <item>@drawable/bg_guide_00</item>
+        <item>@drawable/bg_guide_01</item>
+        <item>@drawable/bg_guide_02</item>
+        <item>@drawable/bg_guide_03</item>
+    </integer-array>
+
+
+    <integer-array name="int_main_tab">
+        <item>@drawable/selector_main_tab_home</item>
+        <item>@drawable/selector_main_tab_my_course</item>
+        <item>@drawable/selector_main_tab_mine</item>
+    </integer-array>
+
+
+    <string-array name="text_main_tab">
+        <item>课程推荐</item>
+        <item>我的课程</item>
+        <item>个人中心</item>
+    </string-array>
+
+    <integer-array name="int_admin_main_tab">
+        <item>@drawable/selector_main_tab_admin_course</item>
+        <item>@drawable/selector_main_tab_admin_stu</item>
+        <item>@drawable/selector_main_tab_mine</item>
+    </integer-array>
+
+
+    <string-array name="text_teacher_main_tab">
+        <item>课程列表</item>
+        <item>学生列表</item>
+        <item>个人中心</item>
+    </string-array>
+
+    <integer-array name="int_teacher_main_tab">
+        <item>@drawable/selector_main_tab_admin_course</item>
+        <item>@drawable/selector_main_tab_admin_stu</item>
+        <item>@drawable/selector_main_tab_mine</item>
+    </integer-array>
+
+
+    <string-array name="text_admin_main_tab">
+        <item>课程列表</item>
+        <item>学生列表</item>
+        <item>个人中心</item>
+    </string-array>
+
+    <integer-array name="int_home_patient_classfiy">
+        <item>@mipmap/select_course</item>
+        <item>@mipmap/query_credit</item>
+        <item>@mipmap/my_course</item>
+    </integer-array>
+
+    <string-array name="text_home_patient_classfiy">
+        <item>课程查询</item>
+        <item>学分查询</item>
+        <item>已选课程</item>
+    </string-array>
+
+    <string-array name="text_mine_desc">
+        <item>个人信息</item>
+        <item>关于App</item>
+        <item>修改密码</item>
+    </string-array>
+    <string-array name="int_mine_desc">
+        <item>@mipmap/icon_personal</item>
+        <item>@mipmap/icon_chat_bottom_appraise</item>
+        <item>@mipmap/icon_account_set</item>
+    </string-array>
+
+    <declare-styleable name="MSeekBar">
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="textBackground" format="reference" />
+        <attr name="textOrientation" format="enum">
+            <enum name="top" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,130 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v11_values-v11.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-v11\\values-v11.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "187"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-w820dp-v13_values-w820dp-v13.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-w820dp-v13\\values-w820dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,113,169,211,255,299,342,392,438,484",
+                        "endColumns": "57,55,41,43,43,42,49,45,45,44",
+                        "endOffsets": "108,164,206,250,294,337,387,433,479,524"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,94,95,96,97,98,99,100,101,102,103,104,111",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,96,140,185,229,273,319,372,431,491,555,605,665,711,755,799,842,886,930,974,1018,1062,1108,1152,1198,1247,1295,1348,1391,1435,1483,1528,1575,1618,1661,1705,1747,1790,1839,1891,1946,2001,2056,2100,2145,2182,2219,2261,2304,2347,2389,2431,2474,2517,2560,2603,2646,2689,2731,2773,2815,2857,2899,2941,2987,3033,3079,3118,3158,3198,3238,3283,3328,3374,3417,3467,3514,3570,3622,3666,3712,3758,3806,3856,3902,3947,3996,4048,4097,4144,4832,4890,4946,4988,5031,5077,5123,5168,5221,5276,5329,5620",
+                        "endLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,94,95,96,97,98,99,100,101,102,103,110,114",
+                        "endColumns": "40,43,44,43,43,45,52,58,59,63,49,59,45,43,43,42,43,43,43,43,43,45,43,45,48,47,52,42,43,47,44,46,42,42,43,41,42,48,51,54,54,54,43,44,36,36,41,42,42,41,41,42,42,42,42,42,42,41,41,41,41,41,41,45,45,45,38,39,39,39,44,44,45,42,49,46,55,51,43,45,45,47,49,45,44,48,51,48,46,41,57,55,41,42,45,45,44,52,54,52,12,12",
+                        "endOffsets": "91,135,180,224,268,314,367,426,486,550,600,660,706,750,794,837,881,925,969,1013,1057,1103,1147,1193,1242,1290,1343,1386,1430,1478,1523,1570,1613,1656,1700,1742,1785,1834,1886,1941,1996,2051,2095,2140,2177,2214,2256,2299,2342,2384,2426,2469,2512,2555,2598,2641,2684,2726,2768,2810,2852,2894,2936,2982,3028,3074,3113,3153,3193,3233,3278,3323,3369,3412,3462,3509,3565,3617,3661,3707,3753,3801,3851,3897,3942,3991,4043,4092,4139,4181,4885,4941,4983,5026,5072,5118,5163,5216,5271,5324,5615,5826"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,94,95,96,97,98,99,100,101,102,103,104,111",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,96,140,185,229,273,319,372,431,491,555,605,665,711,755,799,842,886,930,974,1018,1062,1108,1152,1198,1247,1295,1348,1391,1435,1483,1528,1575,1618,1661,1705,1747,1790,1839,1891,1946,2001,2056,2100,2145,2182,2219,2261,2304,2347,2389,2431,2474,2517,2560,2603,2646,2689,2731,2773,2815,2857,2899,2941,2987,3033,3079,3118,3158,3198,3238,3283,3328,3374,3417,3467,3514,3570,3622,3666,3712,3758,3806,3856,3902,3947,3996,4048,4097,4144,4832,4890,4946,4988,5031,5077,5123,5168,5221,5276,5329,5620",
+                        "endLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,94,95,96,97,98,99,100,101,102,103,110,114",
+                        "endColumns": "40,43,44,43,43,45,52,58,59,63,49,59,45,43,43,42,43,43,43,43,43,45,43,45,48,47,52,42,43,47,44,46,42,42,43,41,42,48,51,54,54,54,43,44,36,36,41,42,42,41,41,42,42,42,42,42,42,41,41,41,41,41,41,45,45,45,38,39,39,39,44,44,45,42,49,46,55,51,43,45,45,47,49,45,44,48,51,48,46,41,57,55,41,42,45,45,44,52,54,52,12,12",
+                        "endOffsets": "91,135,180,224,268,314,367,426,486,550,600,660,706,750,794,837,881,925,969,1013,1057,1103,1147,1193,1242,1290,1343,1386,1430,1478,1523,1570,1613,1656,1700,1742,1785,1834,1886,1941,1996,2051,2095,2140,2177,2214,2256,2299,2342,2384,2426,2469,2512,2555,2598,2641,2684,2726,2768,2810,2852,2894,2936,2982,3028,3074,3113,3153,3193,3233,3278,3323,3369,3412,3462,3509,3565,3617,3661,3707,3753,3801,3851,3897,3942,3991,4043,4092,4139,4181,4885,4941,4983,5026,5072,5118,5163,5216,5271,5324,5615,5826"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v14_values-v14.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "201"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-w820dp-v13_values-w820dp-v13.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-w820dp-v13\\values-w820dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,113,169,211,255,299,342,392,438,484",
+                        "endColumns": "57,55,41,43,43,42,49,45,45,44",
+                        "endOffsets": "108,164,206,250,294,337,387,433,479,524"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v11_values-v11.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\TimetableView-master\\AndroidTimetableView\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-v11\\values-v11.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "187"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v14_values-v14.arsc.flat",
+            "map": [
+                {
+                    "source": "D:\\Android\\AndroidStudioProjects\\OtherProject10\\course\\CourseHelper\\TimetableView\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "201"
+                    }
+                }
+            ]
+        }
+    ]
+}

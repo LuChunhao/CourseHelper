@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_cl_root_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.vondear.rxui.view.RxTitle
+        android:id="@+id/id_rt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tb_blue3"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="用户注册" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/id_cl_content_register"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:padding="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_rt_title">
+
+        <ImageView
+            android:id="@+id/id_iv_register_logo"
+            android:layout_width="@dimen/dp_55"
+            android:layout_height="@dimen/dp_55"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/app_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/id_iv_icon_user"
+            style="@style/style_left_icon_login"
+            android:src="@mipmap/icon_user"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_account"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_account" />
+
+        <EditText
+            android:id="@+id/id_et_user_account"
+            style="@style/style_et_account_login"
+            android:layout_marginTop="@dimen/dp_30"
+            android:hint="请输入用户名"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_icon_user"
+            app:layout_constraintRight_toLeftOf="@id/id_iv_clean_account"
+            app:layout_constraintTop_toBottomOf="@id/id_iv_register_logo" />
+
+        <ImageView
+            android:id="@+id/id_iv_clean_account"
+            style="@style/style_iv_clear_account_login"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_account"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_account" />
+
+        <View
+            android:id="@+id/id_v_line_account"
+            style="@style/style_v_line_login"
+            app:layout_constraintTop_toBottomOf="@id/id_et_user_account" />
+
+        <ImageView
+            android:id="@+id/id_iv_icon_number"
+            style="@style/style_left_icon_login"
+            android:src="@mipmap/icon_number"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_number"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_number" />
+
+        <EditText
+            android:id="@+id/id_et_user_number"
+            style="@style/style_et_account_login"
+            android:layout_marginTop="@dimen/dp_15"
+            android:hint="请输入学号(工号)"
+            android:inputType="number"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_icon_number"
+            app:layout_constraintRight_toLeftOf="@id/id_iv_clean_number"
+            app:layout_constraintTop_toBottomOf="@id/id_v_line_account" />
+
+        <ImageView
+            android:id="@+id/id_iv_clean_number"
+            style="@style/style_iv_clear_account_login"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_number"
+            app:layout_constraintLeft_toRightOf="@id/id_et_user_number"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_number" />
+
+        <View
+            android:id="@+id/id_v_line_number"
+            style="@style/style_v_line_login"
+            app:layout_constraintTop_toBottomOf="@id/id_et_user_number" />
+
+
+        <ImageView
+            android:id="@+id/id_iv_icon_pwd"
+            style="@style/style_left_icon_login"
+            android:src="@mipmap/icon_pw"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+        <EditText
+            android:id="@+id/id_et_user_pwd"
+            style="@style/style_et_account_login"
+            android:layout_marginTop="@dimen/dp_15"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_icon_pwd"
+            app:layout_constraintRight_toLeftOf="@id/id_iv_clean_pwd"
+            app:layout_constraintTop_toBottomOf="@id/id_v_line_number" />
+
+        <ImageView
+            android:id="@+id/id_iv_clean_pwd"
+            style="@style/style_iv_clear_account_login"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+            app:layout_constraintLeft_toRightOf="@id/id_et_user_pwd"
+            app:layout_constraintRight_toLeftOf="@id/id_cb_pwd"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+        <CheckBox
+            android:id="@+id/id_cb_pwd"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@drawable/selector_pwd_login"
+            android:button="@null"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_clean_pwd"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd" />
+
+        <View
+            android:id="@+id/id_v_line_pwd"
+            style="@style/style_v_line_login"
+            app:layout_constraintTop_toBottomOf="@id/id_et_user_pwd" />
+
+        <ImageView
+            android:id="@+id/id_iv_icon_pwd_sure"
+            style="@style/style_left_icon_login"
+            android:src="@mipmap/icon_pw"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd_sure"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd_sure" />
+
+        <EditText
+            android:id="@+id/id_et_user_pwd_sure"
+            style="@style/style_et_account_login"
+            android:layout_marginTop="@dimen/dp_15"
+            android:hint="请再次输入密码"
+            android:inputType="textPassword"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_icon_pwd_sure"
+            app:layout_constraintRight_toLeftOf="@id/id_iv_clean_pwd_sure"
+            app:layout_constraintTop_toBottomOf="@id/id_v_line_pwd" />
+
+        <ImageView
+            android:id="@+id/id_iv_clean_pwd_sure"
+            style="@style/style_iv_clear_account_login"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd_sure"
+            app:layout_constraintLeft_toRightOf="@id/id_et_user_pwd_sure"
+            app:layout_constraintRight_toLeftOf="@id/id_cb_pwd_sure"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd_sure" />
+
+        <CheckBox
+            android:id="@+id/id_cb_pwd_sure"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@drawable/selector_pwd_login"
+            android:button="@null"
+            app:layout_constraintBottom_toBottomOf="@id/id_et_user_pwd_sure"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_clean_pwd_sure"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_et_user_pwd_sure" />
+
+        <View
+            android:id="@+id/id_v_line_pwd_sure"
+            style="@style/style_v_line_login"
+            app:layout_constraintTop_toBottomOf="@id/id_et_user_pwd_sure" />
+
+        <ImageView
+            android:id="@+id/id_iv_icon_type"
+            style="@style/style_left_icon_login"
+            android:src="@mipmap/user_type"
+            app:layout_constraintBottom_toBottomOf="@id/id_tv_role_desc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_tv_role_desc" />
+
+        <TextView
+            android:id="@+id/id_tv_role_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:padding="@dimen/dp_3"
+            android:textColor="@color/_9"
+            android:text="角色类型"
+            app:layout_constraintLeft_toRightOf="@id/id_iv_icon_type"
+            app:layout_constraintRight_toLeftOf="@id/id_rg_role"
+            app:layout_constraintTop_toBottomOf="@id/id_v_line_pwd_sure" />
+
+        <RadioGroup
+            android:id="@+id/id_rg_role"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center|right"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/id_tv_role_desc"
+            app:layout_constraintLeft_toRightOf="@id/id_tv_role_desc"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/id_tv_role_desc">
+
+            <RadioButton
+                android:id="@+id/id_rb_role_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/_9"
+                android:checked="true"
+                android:layout_marginRight="@dimen/dp_25"
+                android:text="学生" />
+
+            <RadioButton
+                android:id="@+id/id_rb_role_teacher"
+                android:layout_width="wrap_content"
+                android:textColor="@color/_9"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_height="wrap_content"
+                android:text="管理员" />
+
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/id_v_line_user_type"
+            style="@style/style_v_line_login"
+            app:layout_constraintTop_toBottomOf="@id/id_tv_role_desc" />
+
+        <Button
+            android:id="@+id/id_btn_register"
+            style="@style/style_btn_login"
+            android:layout_marginTop="@dimen/dp_50"
+            android:background="@drawable/shape_bg_btn_login"
+            android:text="注 册"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/id_tv_role_desc" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>
