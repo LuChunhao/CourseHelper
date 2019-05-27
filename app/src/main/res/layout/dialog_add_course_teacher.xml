@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/id_iv_course_desc"
@@ -220,10 +221,11 @@
         android:id="@+id/switch_cengke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_cursor_cengke"
         app:layout_constraintLeft_toRightOf="@id/tv_course_cengke"
-        app:layout_constraintTop_toTopOf="@id/iv_cursor_cengke" />
+        app:layout_constraintTop_toTopOf="@id/iv_cursor_cengke"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 

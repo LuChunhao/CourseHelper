@@ -1,29 +1,29 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
-INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:1-10:12
+ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
+INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:1-10:12
 	package
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:3:5-57
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:3:5-57
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
 	android:versionName
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:5:5-30
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:5:5-30
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:2:11-69
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:4:5-28
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
-		INJECTED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:4:5-28
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
+		INJECTED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml
 uses-sdk
-ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:7:5-9:41
+ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:7:5-9:41
 	android:targetSdkVersion
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:9:9-38
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:9:9-38
 	android:minSdkVersion
-		ADDED from E:\Android\private\CourseHelper\TimetableView\AndroidManifest.xml:8:9-35
+		ADDED from /Volumes/项目/private/CourseHelper/TimetableView/AndroidManifest.xml:8:9-35

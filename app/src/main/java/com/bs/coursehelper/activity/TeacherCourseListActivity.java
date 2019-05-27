@@ -238,7 +238,7 @@ public class TeacherCourseListActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mySubjectList -> {
                     //第一周我们为9月3号,所以从9月3号 开始计算
-                    long timeDiff = RxTimeTool.getIntervalByNow("2019-02-25", RxConstTool.TimeUnit.MSEC,
+                    long timeDiff = RxTimeTool.getIntervalByNow(Constants.FIRST_WEEK_DATE, RxConstTool.TimeUnit.MSEC,
                             new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()));
                     int weekDiff = (int) (timeDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
                     //设置周次选择属性

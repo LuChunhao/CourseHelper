@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bs.coursehelper.Constants;
 import com.bs.coursehelper.R;
 import com.bs.coursehelper.base.BaseActivity;
 import com.bs.coursehelper.bean.CourseTeacherBean;
 import com.bs.coursehelper.bean.MySubject;
 import com.bs.coursehelper.db.DbHelper;
+import com.google.gson.Gson;
 import com.vondear.rxtool.RxConstTool;
 import com.vondear.rxtool.RxDataTool;
 import com.vondear.rxtool.RxTextTool;
@@ -61,6 +64,8 @@ public class CourseListActivity extends BaseActivity {
     private List<CourseTeacherBean> mCourseTeacherBeanList;
     private String[] courseTitles;
     private int selectedCourseIndex = -1;
+    private int selectScheduleIndex = -1;   // 选择要查看的课程详情的index
+    private List<Schedule> selectScheduleList;    // 选中表格中某一项的内容集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -499,9 +504,11 @@ public class CourseListActivity extends BaseActivity {
     private void getCourseList() {
         Observable.just(mDbHelper.queryCourses())
                 .map(mySubjectList -> {
+                    Log.d(TAG, "mySubjectList: " + new Gson().toJson(mySubjectList));
                     if (mCourseTeacherBeanList.size() == 0) {
                         //其实也就是第一次才会查询所有的课程
                         mCourseTeacherBeanList.addAll(mDbHelper.queryAllCourseTeachers());
+                        Log.d(TAG, "mCourseTeacherBeanList: " + new Gson().toJson(mCourseTeacherBeanList));
                         courseTitles = new String[mCourseTeacherBeanList.size()];
                         for (int i = 0; i < mCourseTeacherBeanList.size(); i++) {
                             CourseTeacherBean courseTeacherBean = mCourseTeacherBeanList.get(i);
@@ -514,7 +521,7 @@ public class CourseListActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mySubjectList -> {
                     //第一周我们为9月3号,所以从9月3号 开始计算
-                    long timeDiff = RxTimeTool.getIntervalByNow("2019-02-25", RxConstTool.TimeUnit.MSEC,
+                    long timeDiff = RxTimeTool.getIntervalByNow(Constants.FIRST_WEEK_DATE, RxConstTool.TimeUnit.MSEC,
                             new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()));
                     int weekDiff = (int) (timeDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
                     //设置周次选择属性
@@ -544,20 +551,15 @@ public class CourseListActivity extends BaseActivity {
                                 Log.i(TAG, "getCourseList: day===" + day + "===start===" + start);
                                 int week = getCurWeek();
                                 Log.i(TAG, "getCourseList: week==" + week + "===schedule的个数==" + scheduleList.size());
-                                for (Schedule schedule : scheduleList) {
-                                    Log.i(TAG, "getCourseList: schedule===" + schedule.toString());
-                                    boolean isThis = ScheduleSupport.isThisWeek(schedule, week);
-                                    if (isThis) {
-                                        showCourseDetail(schedule);
-                                        //如果是本周的课程，我们需要显示详情
-                                        String str = "";
-                                        str += schedule.getName() + "," + schedule.getDay() + "," + schedule.getWeekList().toString() + "," + schedule.getStart() + "," + schedule.getStep() + "\n";
-                                        Log.i(TAG, "getCourseList: str==" + str);
-                                        return;
-                                    }
+                                this.selectScheduleList = scheduleList;
+                                if (scheduleList.size() > 0) {
+                                    showScheduleList(scheduleList, day, start);
+                                } else {
+                                    //添加新课程
+                                    showSelectCourse(day, start);
                                 }
-                                //添加新课程
-                                showSelectCourse(day, start);
+
+
                             })
                             .callback((v, scheduleList, day, start, subject) -> {
                                 int week = getCurWeek();
@@ -591,6 +593,12 @@ public class CourseListActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 选择发布课程
+     *
+     * @param day
+     * @param start
+     */
     private void showSelectCourse(int day, int start) {
         //我们添加课程的时候  需要先选择课程+老师  然后自动补全课程的信息
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -605,6 +613,92 @@ public class CourseListActivity extends BaseActivity {
                     showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectedCourseIndex));
                 })
                 .setOnDismissListener(dialogInterface -> selectedCourseIndex = -1)
+                .setNegativeButton("取消", null).create().show();
+    }
+    int selectIndexExclude = -1;
+
+    /**
+     * 选择发布课程(排除已经排过的)
+     *
+     * @param day
+     * @param start
+     */
+    private void showSelectCourseExclude(int day, int start) {
+        int size = mCourseTeacherBeanList.size() - selectScheduleList.size();
+        if (size <= 0) Toast.makeText(mContext, "没有新课程，请先添加", Toast.LENGTH_SHORT).show();
+
+        String[] ScheduleNameList = new String[size];
+        int index = 0;
+
+        for (CourseTeacherBean bean : mCourseTeacherBeanList) {
+            boolean flag = false;
+            for (Schedule selectBean : selectScheduleList) {
+                if (bean.getTeacher().getUserName().equals(selectBean.getTeacher())) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                ScheduleNameList[index] = bean.getCourseName() + "（" + bean.getTeacher().getUserName() + "）";
+                index++;
+            }
+        }
+
+        //我们添加课程的时候  需要先选择课程+老师  然后自动补全课程的信息
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("选择发布的课程").setSingleChoiceItems(ScheduleNameList, -1,
+                (dialogInterface, i) -> selectIndexExclude = i)
+                .setPositiveButton("发布当前课程", (dialog, which) -> {
+                    Log.i(TAG, "getCourseList: which==" + selectIndexExclude);
+                    if (selectIndexExclude == -1) {
+                        RxToast.normal("请先选择要发布的课程");
+                        return;
+                    }
+                    showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectIndexExclude));
+                })
+                .setOnDismissListener(dialogInterface -> selectIndexExclude = -1)
+                .setNegativeButton("取消", null).create().show();
+    }
+
+    /**
+     * 选择要查看的课程
+     */
+    private void showScheduleList(List<Schedule> scheduleList, int day, int start) {
+        String[] ScheduleNameList = new String[scheduleList.size() + 1];
+        for (int i = 0; i < scheduleList.size(); i++) {
+            Schedule schedule = scheduleList.get(i);
+            Log.i(TAG, "getCourseList: schedule===" + schedule.toString());
+            ScheduleNameList[i] = schedule.getName() + "（" + schedule.getTeacher() + "）";
+//            boolean isThis = ScheduleSupport.isThisWeek(schedule, getCurWeek());
+//            if (isThis) {
+//                showCourseDetail(schedule);
+//                //如果是本周的课程，我们需要显示详情
+//                String str = "";
+//                str += schedule.getName() + "," + schedule.getDay() + "," + schedule.getWeekList().toString() + "," + schedule.getStart() + "," + schedule.getStep() + "\n";
+//                Log.i(TAG, "getCourseList: str==" + str);
+//            }
+        }
+        ScheduleNameList[scheduleList.size()] = "发布新课程";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("请选择要查看的课程").setSingleChoiceItems(ScheduleNameList, -1,
+                (dialogInterface, i) -> selectScheduleIndex = i)
+                .setPositiveButton("确定", (dialog, which) -> {
+                    Log.i(TAG, "selectScheduleIndex==" + selectScheduleIndex);
+                    if (selectScheduleIndex == -1) {
+                        RxToast.normal("请先选择要发布的课程");
+                        return;
+                    }
+                    if (selectScheduleIndex == scheduleList.size()) {   // 发布新课程
+                        //添加新课程
+                        //showSelectCourse(day, start);
+                        showSelectCourseExclude(day, start);
+                    } else {    // 查看详情
+                        showCourseDetail(scheduleList.get(selectScheduleIndex));
+                    }
+                    //showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectScheduleIndex));
+                })
+                .setOnDismissListener(dialogInterface -> selectScheduleIndex = -1)
                 .setNegativeButton("取消", null).create().show();
     }
 

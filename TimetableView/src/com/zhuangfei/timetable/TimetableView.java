@@ -80,7 +80,7 @@ public class TimetableView extends LinearLayout {
     private ScheduleColorPool colorPool;
 
     //是否显示非本周课程
-    private boolean isShowNotCurWeek = true;
+    private boolean isShowNotCurWeek = false;
 
     //课程项、侧边栏、日期栏的透明度，1：不透明，0：透明
     private float itemAlpha = 1, slideAlpha = 1, dateAlpha = 1;

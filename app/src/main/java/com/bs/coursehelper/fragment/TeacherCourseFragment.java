@@ -234,7 +234,7 @@ public class TeacherCourseFragment extends BaseFragment {
         EditText idEtCourseName = dialogView.findViewById(R.id.id_et_course_name);
         EditText idEtCourseStuNum = dialogView.findViewById(R.id.id_et_course_stu_num);
         EditText idEtCourseNum = dialogView.findViewById(R.id.id_et_course_num);
-
+        Switch switch_cengke = dialogView.findViewById(R.id.switch_cengke);
         EditText idEtCourseScore = dialogView.findViewById(R.id.id_et_course_score);
         idEtCourseNum.setEnabled(false);
 
@@ -242,6 +242,8 @@ public class TeacherCourseFragment extends BaseFragment {
         idEtCourseStuNum.setText(String.valueOf(courseTeacherBean.getCourseMax()));
         idEtCourseNum.setText(String.valueOf(courseTeacherBean.getCourseStep()));
         idEtCourseScore.setText(String.valueOf(courseTeacherBean.getCourseScore()));
+
+        switch_cengke.setChecked(courseTeacherBean.getIsAllowCengKe() == 1);
 
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext)
                 .setView(dialogView)
@@ -280,10 +282,10 @@ public class TeacherCourseFragment extends BaseFragment {
                     mActivity.handleEtEmpty(idEtCourseScore);
                     return;
                 }
-
                 courseTeacherBean.setCourseName(courseName);
                 courseTeacherBean.setCourseMax(Integer.parseInt(courseStuNum));
                 courseTeacherBean.setCourseScore(Float.parseFloat(courseScore));
+                courseTeacherBean.setIsAllowCengKe(switch_cengke.isChecked() ? 1 : 0);
 
                 Observable.just(mDbHelper.updateCourseTeacher(courseTeacherBean))
                         .subscribeOn(Schedulers.io())

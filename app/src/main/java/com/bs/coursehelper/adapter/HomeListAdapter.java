@@ -78,11 +78,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
         int applications = mySubject.getCourseStuApplications();
         int stuNum = mySubject.getCourseStuNum();
         if (applications == stuNum){
-            holder.idIvSignUp.setVisibility(View.GONE);
+            //holder.idIvSignUp.setVisibility(View.GONE);
             holder.idIvIsAll.setVisibility(View.VISIBLE);
         }else{
             holder.idIvIsAll.setVisibility(View.GONE);
-            holder.idIvSignUp.setVisibility(View.VISIBLE);
+            //holder.idIvSignUp.setVisibility(View.VISIBLE);
         }
         RxTextTool.getBuilder("报名人数：")
                 .append(applications + " (" + stuNum + ")")

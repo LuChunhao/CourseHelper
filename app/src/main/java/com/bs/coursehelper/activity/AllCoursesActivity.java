@@ -55,7 +55,7 @@ public class AllCoursesActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        idRtTitle.setPadding(0, RxBarTool.getStatusBarHeight(mContext), 0, 0);
+        //idRtTitle.setPadding(0, RxBarTool.getStatusBarHeight(mContext), 0, 0);
         idRtTitle.setLeftFinish(mActivity);
 
         mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);

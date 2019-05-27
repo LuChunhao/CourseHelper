@@ -176,19 +176,22 @@ public class SplashActivity extends BaseActivity {
                     Log.i(TAG, "getUserList: userList.size()===" + userList.size());
                     if (userList.size() > 0) {
                         for (User user : userList) {
-                            CourseTeacherBean courseTeacherBean = new CourseTeacherBean();
-                            courseTeacherBean.setTeacher(user);
-                            courseTeacherBean.setCourseName("大学" + user.getUserName().replace("老师", ""));    // 课程名称
-                            courseTeacherBean.setCourseMax(70); // 上课人数
-                            courseTeacherBean.setCourseStep(1); // 课时
-                            courseTeacherBean.setCourseScore(1);    // 学分
-                            if (Integer.parseInt(user.getUserNumber()) % 2 == 0) {
-                                courseTeacherBean.setIsAllowCengKe(1);
-                            } else {
-                                courseTeacherBean.setIsAllowCengKe(0);
+                            if (user.getUserType() == 2) {
+                                CourseTeacherBean courseTeacherBean = new CourseTeacherBean();
+                                courseTeacherBean.setTeacher(user);
+                                courseTeacherBean.setCourseName("大学" + user.getUserName().replace("老师", ""));    // 课程名称
+                                courseTeacherBean.setCourseMax(70); // 上课人数
+                                courseTeacherBean.setCourseStep(1); // 课时
+                                courseTeacherBean.setCourseScore(1);    // 学分
+                                if (Integer.parseInt(user.getUserNumber()) % 2 == 0) {
+                                    courseTeacherBean.setIsAllowCengKe(1);
+                                } else {
+                                    courseTeacherBean.setIsAllowCengKe(0);
+                                }
+
+                                dbHelper.insertCourseTeacher(courseTeacherBean);
                             }
 
-                            dbHelper.insertCourseTeacher(courseTeacherBean);
                         }
                         gotoNextPage();
                     }

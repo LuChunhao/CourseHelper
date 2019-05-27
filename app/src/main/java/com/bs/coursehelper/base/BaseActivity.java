@@ -62,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     protected boolean isTransparent() {
-        return true;
+        return false;
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param savedInstanceState
      */
-    protected void initParam(Bundle savedInstanceState) {
+    protected void /**/initParam(Bundle savedInstanceState) {
 
     }
 

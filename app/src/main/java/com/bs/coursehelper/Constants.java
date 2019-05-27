@@ -38,4 +38,7 @@ public class Constants {
      */
     public static final String IS_EXIST_USER_URL = BASE_URL + "/api/v1_0/user/exist";
 
+
+    public static final String FIRST_WEEK_DATE = "2019-02-25";
+
 }

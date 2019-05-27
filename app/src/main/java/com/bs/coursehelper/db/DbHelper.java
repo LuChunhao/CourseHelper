@@ -38,9 +38,9 @@ public class DbHelper {
      * 表的名字
      */
     private static final String DATABASE_USER_TABLE = "tb_user"; //用户表
-    private static final String DATABASE_COURSE_TABLE = "tb_course";//发布的课程信息表
+    private static final String DATABASE_COURSE_TABLE = "tb_course";//管理员发布的课程信息表
     private static final String DATABASE_COURSE_USER_TABLE = "tb_course_user";//用户课程中间表
-    private static final String DATABASE_COURSE_TEACHER_TABLE = "tb_course_teacher";//课程表
+    private static final String DATABASE_COURSE_TEACHER_TABLE = "tb_course_teacher";//课程表 教师发布的课程
 
     /**
      * 表的行名称 用户的id、名称、密保、
@@ -90,6 +90,7 @@ public class DbHelper {
     public static final String KEY_COURSE_TEACHER_COURSE_NUM = "courseNum";
     public static final String KEY_COURSE_TEACHER_COURSE_NAME = "courseName";
     public static final String KEY_COURSE_TEACHER_COURSE_SCORE = "courseScore";
+    public static final String KEY_COURSE_ALLOW_CENGKE = "tableIsAllowCengke";
 
     /**
      * 创建表数据
@@ -108,7 +109,7 @@ public class DbHelper {
 
     private static final String CREATE_COURSE_TEACHER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_TEACHER_TABLE + " (" + KEY_ID + " integer primary key autoincrement, " +
             KEY_COURSE_TEACHER_ID + " integer, " + KEY_COURSE_TEACHER_COURSE_STEP + " integer, " + KEY_COURSE_TEACHER_STU_MAX + " integer, " + KEY_COURSE_TEACHER_COURSE_NUM + " integer, " +
-            KEY_COURSE_TEACHER_COURSE_NAME + " text not null, " + KEY_COURSE_TEACHER_COURSE_SCORE + " float);";
+            KEY_COURSE_ALLOW_CENGKE + " integer, " + KEY_COURSE_TEACHER_COURSE_NAME + " text not null, " + KEY_COURSE_TEACHER_COURSE_SCORE + " float);";
 
     private static List<String> tables;
 
@@ -217,7 +218,7 @@ public class DbHelper {
         mDb.beginTransaction();
         try {
 
-            if (queryUserByNumber(user.getUserNumber())) {  // 包含该用户
+            if (queryUserByNumber(user)) {  // 包含该用户
                 result = -2;
             } else {
                 // insert or ignore into table_name (id,type) values (2,0);
@@ -243,14 +244,37 @@ public class DbHelper {
     /**
      * 根据学号判断是否已经存在该用户
      *
-     * @param userNumber
+     * @param user
      * @return
      */
-    public boolean queryUserByNumber(String userNumber) {
+    public boolean queryUserByNumber(User user) {
         boolean isHave = false;
         Cursor cursor;
-        String sql = "select * from " + DATABASE_USER_TABLE + " where " + KEY_NUMBER + "= ? ";
-        cursor = mDb.rawQuery(sql, new String[]{userNumber});
+        String sql = "select * from " + DATABASE_USER_TABLE + " where " + KEY_NUMBER + "= ? or " + KEY_NAME + " = ?";
+        cursor = mDb.rawQuery(sql, new String[]{user.getUserNumber(), user.getUserName()});
+//            cursor = mDb.query(DATABASE_USER_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PWD, KEY_PWD_HELP},
+//                    KEY_NAME + "= ? and " + KEY_PWD + " = ?", new String[]{userName, userPwd},
+//                    null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                isHave = true;
+            }
+            cursor.close();
+        }
+        return isHave;
+    }
+
+    /**
+     * 根据老师id判断是否已经新建过课程
+     *
+     * @param id
+     * @return
+     */
+    public boolean queryCourseByTeacherId(int id) {
+        boolean isHave = false;
+        Cursor cursor;
+        String sql = "select * from " + DATABASE_COURSE_TEACHER_TABLE + " where " + KEY_COURSE_TEACHER_ID + "= ? ";
+        cursor = mDb.rawQuery(sql, new String[]{String.valueOf(id)});
 //            cursor = mDb.query(DATABASE_USER_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PWD, KEY_PWD_HELP},
 //                    KEY_NAME + "= ? and " + KEY_PWD + " = ?", new String[]{userName, userPwd},
 //                    null, null, null);
@@ -808,6 +832,7 @@ public class DbHelper {
         return mySubjectList;
     }
 
+
     /**
      * 直接获取所有的课程
      *
@@ -925,14 +950,20 @@ public class DbHelper {
         long result = -1;
         mDb.beginTransaction();
         try {
-            ContentValues courseValue = new ContentValues();
-            courseValue.put(KEY_COURSE_TEACHER_ID, courseTeacherBean.getTeacher().getUserId());
-            courseValue.put(KEY_COURSE_TEACHER_COURSE_NAME, courseTeacherBean.getCourseName());
-            courseValue.put(KEY_COURSE_TEACHER_COURSE_NUM, courseTeacherBean.getCourseNum());
-            courseValue.put(KEY_COURSE_TEACHER_COURSE_SCORE, courseTeacherBean.getCourseScore());
-            courseValue.put(KEY_COURSE_TEACHER_COURSE_STEP, courseTeacherBean.getCourseStep());
-            courseValue.put(KEY_COURSE_TEACHER_STU_MAX, courseTeacherBean.getCourseMax());
-            result = mDb.insert(DATABASE_COURSE_TEACHER_TABLE, null, courseValue);
+            if (queryCourseByTeacherId(courseTeacherBean.getTeacher().getUserId())) {  // 包含该用户
+                result = -2;
+            } else {
+                ContentValues courseValue = new ContentValues();
+                courseValue.put(KEY_COURSE_TEACHER_ID, courseTeacherBean.getTeacher().getUserId());
+                courseValue.put(KEY_COURSE_TEACHER_COURSE_NAME, courseTeacherBean.getCourseName());
+                courseValue.put(KEY_COURSE_TEACHER_COURSE_NUM, courseTeacherBean.getCourseNum());
+                courseValue.put(KEY_COURSE_TEACHER_COURSE_SCORE, courseTeacherBean.getCourseScore());
+                courseValue.put(KEY_COURSE_TEACHER_COURSE_STEP, courseTeacherBean.getCourseStep());
+                courseValue.put(KEY_COURSE_TEACHER_STU_MAX, courseTeacherBean.getCourseMax());
+                courseValue.put(KEY_COURSE_ALLOW_CENGKE, courseTeacherBean.getIsAllowCengKe());
+                result = mDb.insert(DATABASE_COURSE_TEACHER_TABLE, null, courseValue);
+            }
+
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
@@ -978,6 +1009,7 @@ public class DbHelper {
         courseTeacherBean.setCourseScore(cursor.getFloat(cursor.getColumnIndex(KEY_COURSE_TEACHER_COURSE_SCORE)));
         courseTeacherBean.setCourseName(cursor.getString(cursor.getColumnIndex(KEY_COURSE_TEACHER_COURSE_NAME)));
         courseTeacherBean.setCourseStuApplications(queryCourseApplications(courseId));
+        courseTeacherBean.setIsAllowCengKe(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_ALLOW_CENGKE)));
         return courseTeacherBean;
     }
 
@@ -1019,6 +1051,7 @@ public class DbHelper {
             courseValue.put(KEY_COURSE_TEACHER_COURSE_SCORE, courseTeacherBean.getCourseScore());
             courseValue.put(KEY_COURSE_TEACHER_COURSE_STEP, courseTeacherBean.getCourseStep());
             courseValue.put(KEY_COURSE_TEACHER_STU_MAX, courseTeacherBean.getCourseMax());
+            courseValue.put(KEY_COURSE_ALLOW_CENGKE, courseTeacherBean.getIsAllowCengKe());
             result = mDb.update(DATABASE_COURSE_TEACHER_TABLE, courseValue, KEY_ID + "=?", new String[]{String.valueOf(courseTeacherBean.getId())});
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
@@ -1038,6 +1071,29 @@ public class DbHelper {
         Cursor cursor = null;
         if (cursor == null) {
             cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, null, null, null, null, null);
+        }
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                CourseTeacherBean courseTeacherBean = setCourseTeacher(cursor);
+                if (courseTeacherBean != null) {
+                    courseTeacherBeanList.add(courseTeacherBean);
+                }
+            }
+            cursor.close();
+        }
+        return courseTeacherBeanList;
+    }
+
+    /**
+     * 查询所有允许蹭课的课程
+     *
+     * @return
+     */
+    public List<CourseTeacherBean> queryAllCourseTeachersAllowed() {
+        List<CourseTeacherBean> courseTeacherBeanList = new ArrayList<>();
+        Cursor cursor = null;
+        if (cursor == null) {
+            cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_ALLOW_CENGKE + "=？", new String[]{String.valueOf(1)}, null, null, null);
         }
         if (cursor != null) {
             while (cursor.moveToNext()) {
