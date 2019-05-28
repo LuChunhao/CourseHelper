@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bs.coursehelper.Constants;
 import com.bs.coursehelper.R;
 import com.bs.coursehelper.activity.AllCoursesActivity;
+import com.bs.coursehelper.activity.AuditClassActivity;
 import com.bs.coursehelper.activity.CourseStuScoreActivity;
 import com.bs.coursehelper.activity.SelectedCourseListActivity;
 import com.bs.coursehelper.adapter.HomeClassfiyAdapter;
@@ -120,8 +121,9 @@ public class HomeFragment extends BaseFragment {
                 case "课程查询":
                     RxActivityTool.skipActivity(mContext, AllCoursesActivity.class);
                     break;
-                case "学分查询":
-                    RxActivityTool.skipActivity(mContext, CourseStuScoreActivity.class);
+                case "我要蹭课":
+                    //RxActivityTool.skipActivity(mContext, CourseStuScoreActivity.class);
+                    RxActivityTool.skipActivity(mContext, AuditClassActivity.class);
 
 //                    Observable.just(mDbHelper.querySelectedScore(user.getUserId()))
 //                            .subscribeOn(Schedulers.io())
@@ -132,7 +134,7 @@ public class HomeFragment extends BaseFragment {
 //                                    .setContentText("已选学分: " + score)
 //                                    .show());
                     break;
-                case "已选课程":
+                case "已蹭课程":
                     RxActivityTool.skipActivity(mContext, SelectedCourseListActivity.class);
                     break;
             }
@@ -298,7 +300,7 @@ public class HomeFragment extends BaseFragment {
         int bgColor = mContext.getResources().getColor(R.color.tb_blue3);
         RxTextTool.getBuilder("课程名称：").append(mySubject.getName()).setForegroundColor(bgColor).into(idTvCourseName);
         RxTextTool.getBuilder("授课教师：").append(mySubject.getTeacher()).setForegroundColor(bgColor).into(idTvCourseTeacher);
-        RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
+        //RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
         RxTextTool.getBuilder("报名人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
         RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
 

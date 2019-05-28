@@ -1,5 +1,7 @@
 package com.bs.coursehelper.activity;
 
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +19,9 @@ import com.bs.coursehelper.R;
 import com.bs.coursehelper.base.BaseActivity;
 import com.bs.coursehelper.bean.CourseTeacherBean;
 import com.bs.coursehelper.bean.MySubject;
+import com.bs.coursehelper.bean.User;
 import com.bs.coursehelper.db.DbHelper;
+import com.bs.coursehelper.utils.SPUtil;
 import com.google.gson.Gson;
 import com.vondear.rxtool.RxConstTool;
 import com.vondear.rxtool.RxDataTool;
@@ -39,14 +43,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.security.auth.Subject;
+
 import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class CourseListActivity extends BaseActivity {
-
+public class AuditClassActivity extends BaseActivity {
     @BindView(R.id.id_rt_title)
     RxTitle idRtTitle;
     @BindView(R.id.id_wv_course_list)
@@ -60,12 +65,16 @@ public class CourseListActivity extends BaseActivity {
     //记录切换的周次，不一定是当前周
     private int targetWeek = -1;
 
+    private User user;
+
 
     private List<CourseTeacherBean> mCourseTeacherBeanList;
     private String[] courseTitles;
     private int selectedCourseIndex = -1;
     private int selectScheduleIndex = -1;   // 选择要查看的课程详情的index
     private List<Schedule> selectScheduleList = new ArrayList<>();    // 本周选中表格中某一项的内容集合
+    private List<MySubject> subjects = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,8 @@ public class CourseListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        String userInfoStr = (String) SPUtil.getInstanse().getParam(Constants.USER_LOCAL_INFO, "");
+        user = new Gson().fromJson(userInfoStr, User.class);
         mCourseTeacherBeanList = new ArrayList<>();
         mDbHelper = DbHelper.getInstance();
         mSweetAlertDialog.show();
@@ -373,132 +384,6 @@ public class CourseListActivity extends BaseActivity {
     }
 
     /**
-     * 新增课程
-     *
-     * @param day
-     * @param start
-     */
-    private void editCourseDetail(int day, int start, Schedule subject) {
-        View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_add_course, null, false);
-        EditText idEtCourseName = dialogView.findViewById(R.id.id_et_course_name);
-        EditText idEtCourseTeacherName = dialogView.findViewById(R.id.id_et_course_teacher_name);
-        EditText idEtCourseAddr = dialogView.findViewById(R.id.id_et_course_addr);
-        EditText idEtCourseStuNum = dialogView.findViewById(R.id.id_et_course_stu_num);
-        EditText idEtCourseNum = dialogView.findViewById(R.id.id_et_course_num);
-        EditText idEtCourseScore = dialogView.findViewById(R.id.id_et_course_score);
-        idEtCourseName.setEnabled(false);
-        idEtCourseTeacherName.setEnabled(false);
-        idEtCourseStuNum.setEnabled(false);
-        idEtCourseNum.setEnabled(false);
-        idEtCourseScore.setEnabled(false);
-
-        Map<String, Object> extras = subject.getExtras();
-        idEtCourseName.setText(subject.getName());
-        idEtCourseTeacherName.setText(subject.getTeacher());
-        idEtCourseAddr.setText(subject.getRoom());
-        idEtCourseStuNum.setText(String.valueOf(extras.get(MySubject.COURSE_STU_NUM)));
-        idEtCourseNum.setText(String.valueOf(subject.getStep()));
-        idEtCourseScore.setText(String.valueOf(extras.get(MySubject.COURSE_SCORE)));
-
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext)
-                .setView(dialogView)
-                .setPositiveButton("保存", null).setNegativeButton("放弃", null)
-                .create();
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.setOnShowListener(dialog -> {
-            Button positionButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-            Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-            positionButton.setOnClickListener(v -> {
-                String courseName = idEtCourseName.getText().toString().trim();
-                String courseTeacherName = idEtCourseTeacherName.getText().toString().trim();
-                String courseAddr = idEtCourseAddr.getText().toString().trim();
-                String courseStuNum = idEtCourseStuNum.getText().toString().trim();
-                String courseNum = idEtCourseNum.getText().toString().trim();
-                String courseScore = idEtCourseScore.getText().toString().trim();
-                if (RxDataTool.isEmpty(courseName)) {
-                    RxToast.normal("课程名称不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseName);
-                    return;
-                }
-                if (RxDataTool.isEmpty(courseTeacherName)) {
-                    RxToast.normal("授课教师不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseTeacherName);
-                    return;
-                }
-                if (RxDataTool.isEmpty(courseAddr)) {
-                    RxToast.normal("授课地点不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseAddr);
-                    return;
-                }
-                if (RxDataTool.isEmpty(courseStuNum)) {
-                    RxToast.normal("上课人数不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseStuNum);
-                    return;
-                } else if (!RxDataTool.isInteger(courseStuNum) || courseStuNum.startsWith("0")) {
-                    RxToast.normal("上课人数输入不合法！！！");
-                    mActivity.handleEtEmpty(idEtCourseStuNum);
-                    return;
-                }
-
-                int step = Integer.parseInt(courseNum);
-                if (RxDataTool.isEmpty(courseNum)) {
-                    RxToast.normal("课程节数不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseNum);
-                    return;
-                } else if (!RxDataTool.isInteger(courseNum) || courseNum.startsWith("0")) {
-                    RxToast.normal("课程节数输入不合法！！！");
-                    mActivity.handleEtEmpty(idEtCourseNum);
-                    return;
-                } else if (start + step > 10) {
-                    RxToast.normal("当天的课程可用节数不够设置！！！");
-                    mActivity.handleEtEmpty(idEtCourseNum);
-                    return;
-                }
-
-                if (RxDataTool.isEmpty(courseScore)) {
-                    RxToast.normal("课程学分不能为空！！！");
-                    mActivity.handleEtEmpty(idEtCourseScore);
-                    return;
-                } else if (!RxDataTool.isNumber(courseScore) || courseScore.equals("0.0")) {
-                    RxToast.normal("课程学分输入不合法！！！");
-                    mActivity.handleEtEmpty(idEtCourseScore);
-                    return;
-                }
-                MySubject mySubject = new MySubject();
-                mySubject.setId((Integer) extras.get(MySubject.COURSE_ID));
-                mySubject.setName(courseName);
-                mySubject.setRoom(courseAddr);
-                mySubject.setTeacher(courseTeacherName);
-                mySubject.setWeekList(subject.getWeekList());
-                mySubject.setStart(start);
-                mySubject.setDay(day);
-                mySubject.setStep(step);
-                mySubject.setTerm((String) extras.get(MySubject.COURSE_TERM));
-                mySubject.setCourseStuNum(Integer.parseInt(courseStuNum));
-                mySubject.setCourseStuApplications((Integer) extras.get(MySubject.COURSE_STU_APPLICATIONS));
-                mySubject.setCourseScore(Float.parseFloat(courseScore));
-
-                Observable.just(mDbHelper.updateCourse(mySubject))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(aLong -> {
-                            if (aLong >= 0) {
-                                RxToast.normal("课程更新成功！！！");
-                                getCourseList();
-                                alertDialog.dismiss();
-                            } else {
-                                RxToast.normal("课程更新失败！！！");
-                            }
-                        });
-
-            });
-            negativeButton.setOnClickListener(v -> alertDialog.dismiss());
-        });
-        alertDialog.show();
-    }
-
-
-    /**
      * 获取课程的列表
      */
     private void getCourseList() {
@@ -506,14 +391,27 @@ public class CourseListActivity extends BaseActivity {
                 .map(mySubjectList -> {
                     Log.d(TAG, "mySubjectList: " + new Gson().toJson(mySubjectList));
                     if (mCourseTeacherBeanList.size() == 0) {
-                        //其实也就是第一次才会查询所有的课程
-                        mCourseTeacherBeanList.addAll(mDbHelper.queryAllCourseTeachers());
+                        // 教师新建的课程
+                        mCourseTeacherBeanList.addAll(mDbHelper.queryAllCourseTeachersAllowed());
                         Log.d(TAG, "mCourseTeacherBeanList: " + new Gson().toJson(mCourseTeacherBeanList));
                         courseTitles = new String[mCourseTeacherBeanList.size()];
                         for (int i = 0; i < mCourseTeacherBeanList.size(); i++) {
                             CourseTeacherBean courseTeacherBean = mCourseTeacherBeanList.get(i);
                             courseTitles[i] = courseTeacherBean.getCourseName() + "(" + courseTeacherBean.getTeacher().getUserName() + ")";
                         }
+
+                        subjects.clear();
+                        for (MySubject subject : mySubjectList) {
+                            for (CourseTeacherBean bean : mCourseTeacherBeanList) {
+                                // 教师名相同，课程名相同，且允许蹭课
+                                if (subject.getName().equals(bean.getCourseName()) && bean.getIsAllowCengKe() == 1 && subject.getTeacher().equals(bean.getTeacher().getUserName())) {
+                                    subjects.add(subject);
+                                    break;
+                                }
+                            }
+                        }
+                        mySubjectList.clear();
+                        mySubjectList.addAll(subjects);
                     }
                     return mySubjectList;
                 })
@@ -560,25 +458,8 @@ public class CourseListActivity extends BaseActivity {
                                 //this.selectScheduleList = scheduleList;
                                 if (scheduleList.size() > 0) {
                                     showScheduleList(scheduleList, day, start);
-                                } else {
-                                    //添加新课程
-                                    showSelectCourse(day, start);
                                 }
 
-
-                            })
-                            .callback((v, scheduleList, day, start, subject) -> {
-                                int week = getCurWeek();
-                                for (Schedule schedule : scheduleList) {
-                                    Log.i(TAG, "getCourseList: schedule===" + schedule.toString());
-                                    boolean isThis = ScheduleSupport.isThisWeek(schedule, week);
-                                    if (isThis) {
-                                        //如果有课程的话，我们弹出修改课程的界面，  修改就是删除，因为我们可以修改课程名字和教室名字, 但是课程的节数不能修改
-                                        editCourseDetail(day, start, subject);
-                                        return;
-                                    }
-                                }
-                                RxToast.normal("没有可编辑的课程！！！");
 
                             })
                             .callback(curWeek -> {
@@ -587,9 +468,13 @@ public class CourseListActivity extends BaseActivity {
                             //旗标布局点击监听
                             .callback((day, start) -> {
                                 idTvCourseList.hideFlaglayout();
-                                Log.i(TAG, "点击了旗标:周" + (day + 1) + ",第" + start + "节");
-                                //添加新课程
-                                showSelectCourse(day + 1, start);
+//                                Log.i(TAG, "点击了旗标:周" + (day + 1) + ",第" + start + "节");
+//                                //添加新课程
+//                                showSelectCourse(day + 1, start);
+                                new SweetAlertDialog(mContext)
+                                        .setTitleText("提醒")
+                                        .setContentText("您没有权限编辑课程表")
+                                        .show();
 
                             })
                             .showView();
@@ -599,73 +484,6 @@ public class CourseListActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * 选择发布课程
-     *
-     * @param day
-     * @param start
-     */
-    private void showSelectCourse(int day, int start) {
-        //我们添加课程的时候  需要先选择课程+老师  然后自动补全课程的信息
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("选择发布的课程").setSingleChoiceItems(courseTitles, -1,
-                (dialogInterface, i) -> selectedCourseIndex = i)
-                .setPositiveButton("发布当前课程", (dialog, which) -> {
-                    Log.i(TAG, "getCourseList: which==" + selectedCourseIndex);
-                    if (selectedCourseIndex == -1) {
-                        RxToast.normal("请先选择要发布的课程");
-                        return;
-                    }
-                    showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectedCourseIndex));
-                })
-                .setOnDismissListener(dialogInterface -> selectedCourseIndex = -1)
-                .setNegativeButton("取消", null).create().show();
-    }
-
-    int selectIndexExclude = -1;
-
-    /**
-     * 选择发布课程(排除已经排过的)
-     *
-     * @param day
-     * @param start
-     */
-    private void showSelectCourseExclude(int day, int start) {
-        int size = mCourseTeacherBeanList.size() - selectScheduleList.size();
-        if (size <= 0) Toast.makeText(mContext, "没有新课程，请先添加", Toast.LENGTH_SHORT).show();
-
-        String[] ScheduleNameList = new String[size];
-        int index = 0;
-
-        for (CourseTeacherBean bean : mCourseTeacherBeanList) {
-            boolean flag = false;
-            for (Schedule selectBean : selectScheduleList) {
-                if (bean.getTeacher().getUserName().equals(selectBean.getTeacher())) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) {
-                ScheduleNameList[index] = bean.getCourseName() + "（" + bean.getTeacher().getUserName() + "）";
-                index++;
-            }
-        }
-
-        //我们添加课程的时候  需要先选择课程+老师  然后自动补全课程的信息
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("选择发布的课程").setSingleChoiceItems(ScheduleNameList, -1,
-                (dialogInterface, i) -> selectIndexExclude = i)
-                .setPositiveButton("发布当前课程", (dialog, which) -> {
-                    Log.i(TAG, "getCourseList: which==" + selectIndexExclude);
-                    if (selectIndexExclude == -1) {
-                        RxToast.normal("请先选择要发布的课程");
-                        return;
-                    }
-                    showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectIndexExclude));
-                })
-                .setOnDismissListener(dialogInterface -> selectIndexExclude = -1)
-                .setNegativeButton("取消", null).create().show();
-    }
 
     /**
      * 选择要查看的课程
@@ -687,7 +505,6 @@ public class CourseListActivity extends BaseActivity {
             curweekScheduleList.add(schedule);
             Log.i(TAG, "getCourseList: schedule===" + schedule.toString());
         }
-        ScheduleNameList.add("发布新课程");
         //ScheduleNameList[scheduleList.size()] = "发布新课程";
         String[] scheduleNames = new String[ScheduleNameList.size()];
         ScheduleNameList.toArray(scheduleNames);
@@ -700,14 +517,7 @@ public class CourseListActivity extends BaseActivity {
                         RxToast.normal("请先选择要发布的课程");
                         return;
                     }
-                    if (selectScheduleIndex == ScheduleNameList.size() - 1) {   // 发布新课程
-                        //添加新课程
-                        //showSelectCourse(day, start);
-                        showSelectCourseExclude(day, start);
-                    } else {    // 查看详情
-                        showCourseDetail(curweekScheduleList.get(selectScheduleIndex));
-                    }
-                    //showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectScheduleIndex));
+                    showCourseDetail(curweekScheduleList.get(selectScheduleIndex));
                 })
                 .setOnDismissListener(dialogInterface -> selectScheduleIndex = -1)
                 .setNegativeButton("取消", null).create().show();
@@ -716,6 +526,18 @@ public class CourseListActivity extends BaseActivity {
     private int getCurWeek() {
         String title = idRtTitle.getTitle();
         return Integer.parseInt(idRtTitle.getTitle().substring(title.indexOf("第") + 1, title.indexOf("周")));
+    }
+
+    /**
+     * 课程是否已经报过
+     *
+     * @param userId
+     * @param courseId
+     * @return
+     */
+    private int isApplyCoures(int userId, int courseId) {
+        int isApply = DbHelper.getInstance().queryCourseIsApply(userId, courseId);
+        return isApply;
     }
 
     /**
@@ -744,7 +566,65 @@ public class CourseListActivity extends BaseActivity {
 
         new android.app.AlertDialog.Builder(mContext)
                 .setView(dialogView)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("蹭课", (dialog, i) -> {
+                    // TODO
+                    //mSweetAlertDialog.show();
+
+                    int courseId = (int) schedule.getExtras().get(MySubject.ID);
+                    //Toast.makeText(this, "id==" + courseId, Toast.LENGTH_SHORT).show();
+
+//                    courseId = 0;
+//                    for (MySubject subject : subjects) {
+//                        if (subject.getTeacher().equals(schedule.getTeacher()) && subject.getName().equals(schedule.getName())
+//                                && subject.getWeekList().get(0) == schedule.getWeekList().get(0) && subject.getDay() == schedule.getDay()
+//                                && subject.getStart() == schedule.getStart()) {
+//                            courseId = subject.getCourseId();
+//                            break;
+//                        }
+//                    }
+
+                    Log.d(TAG, "showCourseDetail: " + isApplyCoures(user.getUserId(), courseId));
+
+                    Observable.just(isApplyCoures(user.getUserId(), courseId))
+                            .map(aLong -> {
+                                long isSucess = -1;
+                                if (aLong == 0) {
+                                    try {
+                                        isSucess = mDbHelper.insertCourseUser(courseId, user.getUserId());
+                                    } catch (SQLiteException sqLiteException) {
+                                        isSucess = -1;
+                                        sqLiteException.printStackTrace();
+                                    }
+                                } else if (aLong == 1) {
+                                    isSucess = -2;
+                                }
+                                return isSucess;
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {
+                                        mSweetAlertDialog.dismiss();
+                                        if (aLong >= 0) {
+                                            new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                                                    .setTitleText("蹭课成功!")
+                                                    .show();
+                                            //getCourseList();
+                                        } else {
+                                            if (aLong == -2) {
+                                                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                                                        .setTitleText("亲，不能重复蹭课！!")
+                                                        .show();
+                                            } else {
+                                                new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
+                                                        .setTitleText("报名失败!")
+                                                        .show();
+                                            }
+
+                                        }
+                                    }
+                            );
+                })
                 .create().show();
     }
-
 }

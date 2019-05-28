@@ -314,6 +314,15 @@ public class SimpleOperater extends AbsOperater{
      * 初始化panel并为panel设置事件监听
      */
     protected void initPanel() {
+
+//        panels[0] = mView.findViewById(R.id.weekPanel_1);
+//        panels[1] = mView.findViewById(R.id.weekPanel_2);
+//        panels[2] = mView.findViewById(R.id.weekPanel_3);
+//        panels[3] = mView.findViewById(R.id.weekPanel_4);
+//        panels[4] = mView.findViewById(R.id.weekPanel_5);
+//        panels[5] = mView.findViewById(R.id.weekPanel_6);
+//        panels[6] = mView.findViewById(R.id.weekPanel_7);
+
         for (int i = 0; i < panels.length; i++) {
             panels[i] = mView.findViewById(R.id.weekPanel_1 + i);
             data[i] = new ArrayList<>();

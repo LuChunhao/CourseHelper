@@ -39,7 +39,7 @@ public class DbHelper {
      */
     private static final String DATABASE_USER_TABLE = "tb_user"; //用户表
     private static final String DATABASE_COURSE_TABLE = "tb_course";//管理员发布的课程信息表
-    private static final String DATABASE_COURSE_USER_TABLE = "tb_course_user";//用户课程中间表
+    private static final String DATABASE_COURSE_USER_TABLE = "tb_course_user";//用户蹭课的表
     private static final String DATABASE_COURSE_TEACHER_TABLE = "tb_course_teacher";//课程表 教师发布的课程
 
     /**
@@ -76,10 +76,15 @@ public class DbHelper {
     public static final String KEY_COURSE_USER_ID = "id";
     public static final String KEY_COURSE_USER_COURSE_ID = "courseId";
     /**
-     * 用户对应的课程成绩
+     * 用户蹭课的表
      */
     public static final String KEY_COURSE_USER_COURSE_MARK = "userCourseMark";
     public static final String KEY_COURSE_USER_USER_ID = "userId";
+
+    public static final String KEY_AUDIT_COURSE_NAME = "courseName";
+    public static final String KEY_AUDIT_COURSE_TEACHER = "courseName";
+    public static final String KEY_AUDIT_COURSE_PLACE = "coursePlace";
+
 
     /**
      * 课程表
@@ -105,6 +110,7 @@ public class DbHelper {
             KEY_COURSE_STU_NUM + " integer, " + KEY_COURSE_NUM + " integer, " + KEY_COURSE_SCORE + " float, " + KEY_COURSE_COURSE_ID + " integer);";
 
     private static final String CREATE_COURSE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_USER_TABLE + " (" + KEY_COURSE_USER_ID + " integer primary key autoincrement, " +
+
             KEY_COURSE_USER_COURSE_ID + " integer, " + KEY_COURSE_USER_USER_ID + " integer, " + KEY_COURSE_USER_COURSE_MARK + " float);";
 
     private static final String CREATE_COURSE_TEACHER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_TEACHER_TABLE + " (" + KEY_ID + " integer primary key autoincrement, " +
@@ -645,6 +651,19 @@ public class DbHelper {
         return count;
     }
 
+    /**
+     * 查询用户是否蹭过该课程
+     *
+     * @return
+     */
+    public int queryCourseIsApplyByInfo(int userId, int courseId) {
+        Cursor cursor = mDb.query(DATABASE_COURSE_USER_TABLE, null, KEY_COURSE_USER_USER_ID + "=? and " + KEY_COURSE_USER_COURSE_ID + "=?",
+                new String[]{String.valueOf(userId), String.valueOf(courseId)}, null, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
 
     /**
      * 直接获取该用户下的所有的课程
@@ -657,6 +676,9 @@ public class DbHelper {
         while (cursor.moveToNext()) {
             int courseId = cursor.getInt(cursor.getColumnIndex(KEY_COURSE_USER_COURSE_ID));
             CourseTeacherBean courseTeacherBean = queryCourseTeacherById(courseId);
+            if (null == courseTeacherBean) {
+                continue;
+            }
             CourseUserBean courseUserBean = new CourseUserBean();
             courseUserBean.setMidId(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_USER_ID)));
             courseUserBean.setId(courseId);
@@ -739,8 +761,10 @@ public class DbHelper {
         MySubject mySubject = null;
         Cursor cursor = null;
         if (cursor == null) {
-            String sql = "select * from " + DATABASE_COURSE_TABLE + " where " + KEY_COURSE_COURSE_ID + "= ?";
-            cursor = mDb.rawQuery(sql, new String[]{String.valueOf(courseId)});
+            cursor = mDb.query(DATABASE_COURSE_TABLE, null, KEY_ID + "=?", new String[]{String.valueOf(courseId)}, null, null, null, null);
+//            String sql = "select * from " + DATABASE_COURSE_TABLE + " where " + KEY_COURSE_COURSE_ID + "= ?";
+//            cursor = mDb.rawQuery(sql, new String[]{String.valueOf(courseId)});
+            //cursor = mDb.query(DATABASE_COURSE_TABLE, null, null, null, null, null, null, null);
         }
         if (cursor != null) {
             if (cursor.moveToNext()) {
@@ -857,7 +881,7 @@ public class DbHelper {
      */
     public List<MySubject> queryCourses(int courseId) {
         List<MySubject> mySubjectList = new ArrayList<>();
-        Cursor cursor = mDb.query(DATABASE_COURSE_TABLE, null, KEY_COURSE_COURSE_ID + "=?",
+        Cursor cursor = mDb.query(DATABASE_COURSE_TABLE, null, KEY_ID + "=?",
                 new String[]{String.valueOf(courseId)}, null, null, null, null);
         while (cursor.moveToNext()) {
             MySubject mySubject = new MySubject();
@@ -913,9 +937,13 @@ public class DbHelper {
         Cursor cursorUser = mDb.query(DATABASE_COURSE_USER_TABLE, null, KEY_COURSE_USER_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null, null);
         while (cursorUser.moveToNext()) {
             int courseId = cursorUser.getInt(cursorUser.getColumnIndex(KEY_COURSE_USER_COURSE_ID));
+//            int aaa = queryCourseApplications(courseId);
+//            Log.d(TAG, "querySelectedCourses: " + aaa);
             //我们是查询已选课程，所以只需要一个就行了
             MySubject mySubject = queryMySubject(courseId);
-            mySubjectList.add(mySubject);
+            if (null != mySubject) {
+                mySubjectList.add(mySubject);
+            }
         }
         cursorUser.close();
         return mySubjectList;
@@ -933,6 +961,9 @@ public class DbHelper {
             int courseId = cursorUser.getInt(cursorUser.getColumnIndex(KEY_COURSE_USER_COURSE_ID));
             Log.i(TAG, "querySelectedScore: ");
             CourseTeacherBean courseTeacherBean = queryCourseTeacherById(courseId);
+            if (null == courseTeacherBean) {
+                continue;
+            }
             Log.i(TAG, "querySelectedScore: courseTeacherBean==" + courseTeacherBean.toString());
             score += courseTeacherBean.getCourseScore();
         }
@@ -1093,7 +1124,9 @@ public class DbHelper {
         List<CourseTeacherBean> courseTeacherBeanList = new ArrayList<>();
         Cursor cursor = null;
         if (cursor == null) {
-            cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_ALLOW_CENGKE + "=？", new String[]{String.valueOf(1)}, null, null, null);
+            //cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, null, null, null, null, null);
+            //cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_ALLOW_CENGKE + "=？", new int[1], null, null, null);
+            cursor = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_ALLOW_CENGKE + "=?", new String[]{String.valueOf(1)}, null, null, null);
         }
         if (cursor != null) {
             while (cursor.moveToNext()) {

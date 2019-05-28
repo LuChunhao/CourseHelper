@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/id_civ_teacher_head"
+        android:layout_width="@dimen/dp_55"
+        android:layout_height="@dimen/dp_55"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:src="@mipmap/ic_head_default" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_tv_course_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="课程名称"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/text_16" />
+
+        <TextView
+            android:id="@+id/id_tv_student_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="讲课时间：10"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/text_10" />
+
+        <TextView
+            android:id="@+id/id_tv_student_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="报名人数：10"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/text_10" />
+    </LinearLayout>
+
+</LinearLayout>

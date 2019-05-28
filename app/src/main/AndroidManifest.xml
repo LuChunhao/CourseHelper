@@ -33,6 +33,7 @@
         <activity android:name=".activity.AllCoursesActivity"></activity>
         <activity android:name=".activity.TeacherCourseListActivity"></activity>
         <activity android:name=".activity.CourseStuScoreActivity"></activity>
+        <activity android:name=".activity.AuditClassActivity" />
     </application>
 
 </manifest>

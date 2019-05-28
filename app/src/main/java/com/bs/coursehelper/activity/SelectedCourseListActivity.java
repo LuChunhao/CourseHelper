@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bs.coursehelper.Constants;
 import com.bs.coursehelper.R;
 import com.bs.coursehelper.adapter.HomeListAdapter;
+import com.bs.coursehelper.adapter.SelectedCourseAdapter;
 import com.bs.coursehelper.base.BaseActivity;
 import com.bs.coursehelper.bean.MySubject;
 import com.bs.coursehelper.bean.User;
@@ -20,9 +21,11 @@ import com.bs.coursehelper.utils.SPUtil;
 import com.google.gson.Gson;
 import com.vondear.rxtool.RxTextTool;
 import com.vondear.rxui.view.RxTitle;
+import com.zhuangfei.timetable.model.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -42,7 +45,8 @@ public class SelectedCourseListActivity extends BaseActivity {
     private DbHelper mDbHelper;
     private SweetAlertDialog mSweetAlertDialog;
 
-    private HomeListAdapter homeListAdapter;
+    private SelectedCourseAdapter adapter;
+
     private List<MySubject> mySubjectList;
     private User user;
 
@@ -69,21 +73,14 @@ public class SelectedCourseListActivity extends BaseActivity {
         String userInfoStr = (String) SPUtil.getInstanse().getParam(Constants.USER_LOCAL_INFO, "");
         user = new Gson().fromJson(userInfoStr, User.class);
         mySubjectList = new ArrayList<>();
-        homeListAdapter = new HomeListAdapter(mySubjectList, mContext);
+        adapter = new SelectedCourseAdapter(mySubjectList, mContext);
         idRvCourseList.setLayoutManager(new LinearLayoutManager(mContext));
-        homeListAdapter.setIRVOnItemListener((mySubject, position) -> {
-            showCourseDetail(mySubject);
+        adapter.setIRVOnItemListener((mySubject, position) -> {
+            showMySubjectDetail(mySubject);
         });
 
-        homeListAdapter.setIRVViewOnClickListener((view, mySubject, position) -> {
-            if (view.getId() == R.id.id_iv_sign_up) {
-                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("亲，不能重复报名！!")
-                        .show();
-            }
-        });
 
-        homeListAdapter.setIRVOnLongListener((mySubject, position) -> {
+        adapter.setIRVOnLongListener((mySubject, position) -> {
             //删除操作
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("确定删除该课程?")
@@ -124,7 +121,7 @@ public class SelectedCourseListActivity extends BaseActivity {
                             )).show();
 
         });
-        idRvCourseList.setAdapter(homeListAdapter);
+        idRvCourseList.setAdapter(adapter);
 
         getCourseList();
     }
@@ -139,10 +136,12 @@ public class SelectedCourseListActivity extends BaseActivity {
      */
     private void getCourseList() {
         mSweetAlertDialog.show();
+
         Observable.just(mDbHelper.querySelectedCourses(user.getUserId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subjectList -> {
+                    Log.d(TAG, "getCourseList: " + new Gson().toJson(subjectList));
                     if (subjectList.size() == 0) {
                         idRvCourseList.setVisibility(View.GONE);
                         idTvNoData.setText("亲，你还未选课程,请先选择课程！！！");
@@ -153,7 +152,7 @@ public class SelectedCourseListActivity extends BaseActivity {
                         }
                         Log.i(TAG, "getCourseList: su==" + subjectList.toString());
                         mySubjectList.addAll(subjectList);
-                        homeListAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                         idTvNoData.setVisibility(View.GONE);
                         idRvCourseList.setVisibility(View.VISIBLE);
                     }
@@ -182,6 +181,33 @@ public class SelectedCourseListActivity extends BaseActivity {
         RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
 
         new AlertDialog.Builder(mContext)
+                .setView(dialogView)
+                .create().show();
+    }
+
+    /**
+     * 显示课程的详情
+     *
+     * @param mySubject
+     */
+    private void showMySubjectDetail(MySubject mySubject) {
+        View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_course_detail, null, false);
+        TextView idTvCourseName = dialogView.findViewById(R.id.id_tv_course_desc);
+        TextView idTvCourseTeacher = dialogView.findViewById(R.id.id_tv_course_teacher_desc);
+        TextView idTvCourseRoom = dialogView.findViewById(R.id.id_tv_course_addr_desc);
+        TextView idTvCourseDate = dialogView.findViewById(R.id.id_tv_course_date_desc);
+        TextView idTvCourseStuNum = dialogView.findViewById(R.id.id_tv_course_stu_num_desc);
+        TextView idTvCourseNum = dialogView.findViewById(R.id.id_tv_course_num_desc);
+        TextView idTvCourseScore = dialogView.findViewById(R.id.id_tv_course_score_desc);
+        int bgColor = mContext.getResources().getColor(R.color.tb_blue3);
+        RxTextTool.getBuilder("课程名称：").append(mySubject.getName()).setForegroundColor(bgColor).into(idTvCourseName);
+        RxTextTool.getBuilder("授课教师：").append(mySubject.getTeacher()).setForegroundColor(bgColor).into(idTvCourseTeacher);
+        RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
+        RxTextTool.getBuilder("蹭课人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
+        RxTextTool.getBuilder("授课时间：").append("第" + mySubject.getWeekList().get(0) + "周，周" + mySubject.getDay() + ", 第" + mySubject.getStart() + "节开始").setForegroundColor(bgColor).into(idTvCourseDate);
+        RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
+
+        new android.app.AlertDialog.Builder(mContext)
                 .setView(dialogView)
                 .create().show();
     }
