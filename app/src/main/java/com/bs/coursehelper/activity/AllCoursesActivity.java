@@ -1,11 +1,17 @@
 package com.bs.coursehelper.activity;
 
+import android.app.AlertDialog;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bs.coursehelper.Constants;
@@ -38,6 +44,9 @@ public class AllCoursesActivity extends BaseActivity {
     RecyclerView idRvCourseList;
     @BindView(R.id.id_tv_no_data)
     TextView idTvNoData;
+
+    @BindView(R.id.et_search)
+    EditText et_search;
 
     private DbHelper mDbHelper;
     private SweetAlertDialog mSweetAlertDialog;
@@ -124,13 +133,21 @@ public class AllCoursesActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
+        et_search.setOnEditorActionListener((view, actionId, keyEvent) -> {
+            String input = view.getText().toString();
 
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                getCourseList(input);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getCourseList();
+        getCourseList("");
     }
 
     /**
@@ -148,9 +165,9 @@ public class AllCoursesActivity extends BaseActivity {
     /**
      * 获取课程的列表
      */
-    private void getCourseList() {
-        mSweetAlertDialog.show();
-        Observable.just(mDbHelper.queryCoursesGroupByCourseId())
+    private void getCourseList(String key) {
+        //mSweetAlertDialog.show();
+        Observable.just(mDbHelper.queryCoursesGroupByKey(key))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subjectList -> {
@@ -167,9 +184,11 @@ public class AllCoursesActivity extends BaseActivity {
                         idTvNoData.setVisibility(View.GONE);
                         idRvCourseList.setVisibility(View.VISIBLE);
                     }
-                    mSweetAlertDialog.dismissWithAnimation();
+                    //mSweetAlertDialog.dismissWithAnimation();
                 });
     }
+
+
 
 
     /**
@@ -177,7 +196,7 @@ public class AllCoursesActivity extends BaseActivity {
      *
      * @param mySubject
      */
-    private void showCourseDetail(MySubject mySubject) {
+    private void showCourseDetail_bak(MySubject mySubject) {
         View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_course_detail_home, null, false);
         TextView idTvCourseName = dialogView.findViewById(R.id.id_tv_course_desc);
         TextView idTvCourseTeacher = dialogView.findViewById(R.id.id_tv_course_teacher_desc);
@@ -192,6 +211,43 @@ public class AllCoursesActivity extends BaseActivity {
         RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
 
         new android.app.AlertDialog.Builder(mContext)
+                .setView(dialogView)
+                .create().show();
+    }
+
+    /**
+     * 显示课程的详情
+     *
+     * @param mySubject
+     */
+    private void showCourseDetail(MySubject mySubject) {
+        View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_course_detail_home, null, false);
+        TextView idTvCourseName = dialogView.findViewById(R.id.id_tv_course_desc);
+        TextView idTvCourseTeacher = dialogView.findViewById(R.id.id_tv_course_teacher_desc);
+        TextView idTvCourseRoom = dialogView.findViewById(R.id.id_tv_course_addr_desc);
+        TextView idTvCourseStuNum = dialogView.findViewById(R.id.id_tv_course_stu_num_desc);
+        TextView idTvCourseScore = dialogView.findViewById(R.id.id_tv_course_score_desc);
+        ImageView id_iv_course_stu_num = dialogView.findViewById(R.id.id_iv_course_stu_num);  // 人数图标
+        ImageView id_iv_course_addr = dialogView.findViewById(R.id.id_iv_course_addr);  // 授课地点图标
+        View id_v_line_course_addr = dialogView.findViewById(R.id.id_v_line_course_addr);  // 授课地点图标
+        View id_v_line_course_stu_num = dialogView.findViewById(R.id.id_v_line_course_stu_num);
+        // 隐藏地点
+        id_v_line_course_addr.setVisibility(View.GONE);
+        id_iv_course_addr.setVisibility(View.GONE);
+        idTvCourseRoom.setVisibility(View.GONE);
+
+        // 隐藏人数
+        idTvCourseStuNum.setVisibility(View.GONE);
+        id_iv_course_stu_num.setVisibility(View.GONE);
+        id_v_line_course_stu_num.setVisibility(View.GONE);
+        int bgColor = mContext.getResources().getColor(R.color.tb_blue3);
+        RxTextTool.getBuilder("课程名称：").append(mySubject.getName()).setForegroundColor(bgColor).into(idTvCourseName);
+        RxTextTool.getBuilder("授课教师：").append(mySubject.getTeacher()).setForegroundColor(bgColor).into(idTvCourseTeacher);
+        //RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
+        //RxTextTool.getBuilder("蹭课人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
+        RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
+
+        new AlertDialog.Builder(mContext)
                 .setView(dialogView)
                 .create().show();
     }

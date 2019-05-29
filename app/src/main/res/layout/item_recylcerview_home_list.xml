@@ -78,6 +78,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/dp_5"
         android:text="报名人数：10"
+        android:visibility="gone"
         android:textColor="@color/darkgray"
         android:textSize="@dimen/text_10"
         app:layout_constraintLeft_toLeftOf="@id/id_tv_course_name"

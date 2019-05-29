@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bs.coursehelper.bean.CourseTeacherBean;
@@ -799,7 +800,8 @@ public class DbHelper {
         mySubject.setStep(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_STEP)));
         mySubject.setDay(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_DAY)));
         mySubject.setCourseStuNum(cursor.getInt(cursor.getColumnIndex(KEY_COURSE_STU_NUM)));
-        int courseId = cursor.getInt(cursor.getColumnIndex(KEY_COURSE_COURSE_ID));
+        //int courseId = cursor.getInt(cursor.getColumnIndex(KEY_COURSE_COURSE_ID));
+        int courseId = cursor.getInt(cursor.getColumnIndex(KEY_COURSE_ID));
         mySubject.setCourseId(courseId);
         // 查询已报名人数
         mySubject.setCourseStuApplications(queryCourseApplications(courseId));
@@ -856,6 +858,30 @@ public class DbHelper {
         return mySubjectList;
     }
 
+    /**
+     * 根据课程名查询数据
+     *
+     * @return
+     */
+    public List<MySubject> queryCoursesByKey(String key) {
+        List<MySubject> mySubjectList = new ArrayList<>();
+        //Cursor cursor = mDb.query(DATABASE_COURSE_TABLE, null, null, null, null, null, null, null);
+        Cursor cursor;
+        if (TextUtils.isEmpty(key)) {
+            cursor = mDb.query(DATABASE_COURSE_TABLE, null, null, null, null, null, null, null);
+        } else {
+            key = key.trim();
+            cursor = mDb.query(DATABASE_COURSE_TABLE, null, KEY_COURSE_NAME + " LIKE ? or " + KEY_COURSE_TEACHER_NAME + " LIKE ?", new String[]{"%" + key + "%", "%" + key + "%"}, null, null, null, null);
+        }
+        while (cursor.moveToNext()) {
+            MySubject mySubject = new MySubject();
+            setMySubject(mySubject, cursor);
+            mySubjectList.add(mySubject);
+        }
+        cursor.close();
+        return mySubjectList;
+    }
+
 
     /**
      * 直接获取所有的课程
@@ -865,6 +891,28 @@ public class DbHelper {
     public List<MySubject> queryCoursesGroupByCourseId() {
         List<MySubject> mySubjectList = new ArrayList<>();
         Cursor cursor = mDb.query(DATABASE_COURSE_TABLE, null, null, null, KEY_COURSE_COURSE_ID, null, null, null);
+        while (cursor.moveToNext()) {
+            MySubject mySubject = new MySubject();
+            setMySubject(mySubject, cursor);
+            mySubjectList.add(mySubject);
+        }
+        cursor.close();
+        return mySubjectList;
+    }
+
+    /**
+     * 根据课程名查询数据
+     * @return
+     */
+    public List<MySubject> queryCoursesGroupByKey(String key) {
+        List<MySubject> mySubjectList = new ArrayList<>();
+        Cursor cursor;
+        if (TextUtils.isEmpty(key)) {
+            cursor = mDb.query(DATABASE_COURSE_TABLE, null, null, null, KEY_COURSE_COURSE_ID, null, null, null);
+        } else {
+            key = key.trim();
+            cursor = mDb.query(DATABASE_COURSE_TABLE, null, KEY_COURSE_NAME + " LIKE ? or " + KEY_COURSE_TEACHER_NAME + " LIKE ?", new String[]{"%" + key + "%", "%" + key + "%"}, KEY_COURSE_COURSE_ID, null, null, null);
+        }
         while (cursor.moveToNext()) {
             MySubject mySubject = new MySubject();
             setMySubject(mySubject, cursor);

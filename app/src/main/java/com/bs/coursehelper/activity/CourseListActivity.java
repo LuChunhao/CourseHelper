@@ -54,6 +54,9 @@ public class CourseListActivity extends BaseActivity {
     @BindView(R.id.id_tv_course_list)
     TimetableView idTvCourseList;
 
+    @BindView(R.id.et_search)
+    EditText et_search;
+
     private DbHelper mDbHelper;
     private SweetAlertDialog mSweetAlertDialog;
 
@@ -123,6 +126,7 @@ public class CourseListActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        et_search.setVisibility(View.GONE);
         idRtTitle.setLeftFinish(mActivity);
         idRtTitle.setRightOnClickListener(view -> showPopmenu());
 

@@ -56,12 +56,20 @@ public class MyCourseFragment extends BaseFragment {
     TimetableView idTvCourseList;
 
     private DbHelper mDbHelper;
-    private SweetAlertDialog mSweetAlertDialog;
+//    private SweetAlertDialog mSweetAlertDialog;
 
     //记录切换的周次，不一定是当前周
     private int targetWeek = -1;
 
     private User user;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && null != mDbHelper) {
+            getCourseList();
+        }
+    }
 
     @Override
     protected void initView() {
@@ -70,10 +78,10 @@ public class MyCourseFragment extends BaseFragment {
         idRtTitle.setRightOnClickListener(view -> showPopmenu());
 
         idRtTitle.setPadding(0, RxBarTool.getStatusBarHeight(mContext), 0, 0);
-        mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
-        mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        mSweetAlertDialog.setTitleText("Loading");
-        mSweetAlertDialog.setCancelable(false);
+//        mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE);
+//        mSweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//        mSweetAlertDialog.setTitleText("Loading");
+//        mSweetAlertDialog.setCancelable(false);
 
     }
 
@@ -90,7 +98,7 @@ public class MyCourseFragment extends BaseFragment {
         user = new Gson().fromJson(userInfoStr, User.class);
 
         mDbHelper = DbHelper.getInstance();
-        mSweetAlertDialog.show();
+//        mSweetAlertDialog.show();
         getCourseList();
     }
 
@@ -182,10 +190,13 @@ public class MyCourseFragment extends BaseFragment {
      * 设置侧边栏构建监听，TimeSlideAdapter是控件实现的可显示时间的侧边栏
      */
     protected void showTime() {
+//        String[] times = new String[]{
+//                "8:00", "9:00", "10:10", "11:00",
+//                "13:30", "14:30", "15:40", "16:40",
+//                "19:00", "20:00"
+//        };
         String[] times = new String[]{
-                "8:00", "9:00", "10:10", "11:00",
-                "13:30", "14:30", "15:40", "16:40",
-                "19:00", "20:00"
+                "8:00", "10:00", "14:00", "16:00"
         };
         OnSlideBuildAdapter listener = (OnSlideBuildAdapter) idTvCourseList.onSlideBuildListener();
         listener.setTimes(times)
@@ -312,7 +323,7 @@ public class MyCourseFragment extends BaseFragment {
                             })
                             .showView();
 
-                    mSweetAlertDialog.dismissWithAnimation();
+//                    mSweetAlertDialog.dismissWithAnimation();
 
                 });
     }

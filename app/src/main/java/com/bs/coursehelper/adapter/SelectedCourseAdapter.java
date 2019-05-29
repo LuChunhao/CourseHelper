@@ -61,7 +61,7 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
         holder.idTvCourseName.setText(mySubject.getName());
         int applications = mySubject.getCourseStuApplications();
         int stuNum = mySubject.getCourseStuNum();
-        RxTextTool.getBuilder("报名人数：")
+        RxTextTool.getBuilder("蹭课人数：")
                 .append(applications + " (" + stuNum + ")")
                 .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
                 .setProportion(1.8f)
@@ -75,6 +75,13 @@ public class SelectedCourseAdapter extends RecyclerView.Adapter<SelectedCourseAd
             if (mIRVOnItemListener != null) {
                 mIRVOnItemListener.onItemClick(mySubject, position);
             }
+        });
+
+        holder.container.setOnLongClickListener(view -> {
+            if (mIRVOnLongListener != null) {
+                mIRVOnLongListener.onLongClick(mySubject, position);
+            }
+            return true;
         });
 
     }

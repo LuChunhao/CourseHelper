@@ -13,6 +13,14 @@
         android:background="@color/tb_blue3"
         app:title="全部课程" />
 
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入要搜索的课程名称"
+        android:imeOptions="actionSearch"
+        android:inputType="text" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_rv_course_list"
         android:layout_width="match_parent"

@@ -297,11 +297,24 @@ public class HomeFragment extends BaseFragment {
         TextView idTvCourseRoom = dialogView.findViewById(R.id.id_tv_course_addr_desc);
         TextView idTvCourseStuNum = dialogView.findViewById(R.id.id_tv_course_stu_num_desc);
         TextView idTvCourseScore = dialogView.findViewById(R.id.id_tv_course_score_desc);
+        ImageView id_iv_course_stu_num = dialogView.findViewById(R.id.id_iv_course_stu_num);  // 人数图标
+        ImageView id_iv_course_addr = dialogView.findViewById(R.id.id_iv_course_addr);  // 授课地点图标
+        View id_v_line_course_addr = dialogView.findViewById(R.id.id_v_line_course_addr);  // 授课地点图标
+        View id_v_line_course_stu_num = dialogView.findViewById(R.id.id_v_line_course_stu_num);
+        // 隐藏地点
+        id_v_line_course_addr.setVisibility(View.GONE);
+        id_iv_course_addr.setVisibility(View.GONE);
+        idTvCourseRoom.setVisibility(View.GONE);
+
+        // 隐藏人数
+        idTvCourseStuNum.setVisibility(View.GONE);
+        id_iv_course_stu_num.setVisibility(View.GONE);
+        id_v_line_course_stu_num.setVisibility(View.GONE);
         int bgColor = mContext.getResources().getColor(R.color.tb_blue3);
         RxTextTool.getBuilder("课程名称：").append(mySubject.getName()).setForegroundColor(bgColor).into(idTvCourseName);
         RxTextTool.getBuilder("授课教师：").append(mySubject.getTeacher()).setForegroundColor(bgColor).into(idTvCourseTeacher);
         //RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
-        RxTextTool.getBuilder("报名人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
+        //RxTextTool.getBuilder("蹭课人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
         RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
 
         new AlertDialog.Builder(mContext)

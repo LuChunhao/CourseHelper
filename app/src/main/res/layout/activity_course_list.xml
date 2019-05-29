@@ -16,6 +16,14 @@
         app:rightIcon="@mipmap/ic_more"
         app:title="课程表" />
 
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入要搜索的课程名称"
+        android:imeOptions="actionSearch"
+        android:inputType="text" />
+
 
     <com.zhuangfei.timetable.view.WeekView
         android:id="@+id/id_wv_course_list"

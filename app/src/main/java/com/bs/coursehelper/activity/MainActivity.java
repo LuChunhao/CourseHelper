@@ -132,4 +132,9 @@ public class MainActivity extends BaseActivity {
     protected int getLayoutResId() {
         return R.layout.activity_main;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

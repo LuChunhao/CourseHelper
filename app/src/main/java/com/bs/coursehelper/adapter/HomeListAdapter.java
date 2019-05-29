@@ -84,11 +84,11 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
             holder.idIvIsAll.setVisibility(View.GONE);
             //holder.idIvSignUp.setVisibility(View.VISIBLE);
         }
-        RxTextTool.getBuilder("报名人数：")
-                .append(applications + " (" + stuNum + ")")
-                .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
-                .setProportion(1.8f)
-                .into(holder.idTvStudentNum);
+//        RxTextTool.getBuilder("报名人数：")
+//                .append(applications + " (" + stuNum + ")")
+//                .setForegroundColor(mContext.getResources().getColor(R.color.tb_blue1))
+//                .setProportion(1.8f)
+//                .into(holder.idTvStudentNum);
         holder.idClHomeList.setOnClickListener(view -> {
             if (mIRVOnItemListener != null) {
                 mIRVOnItemListener.onItemClick(mySubject, position);

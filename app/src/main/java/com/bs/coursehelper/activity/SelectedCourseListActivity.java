@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bs.coursehelper.Constants;
 import com.bs.coursehelper.R;
@@ -81,17 +82,18 @@ public class SelectedCourseListActivity extends BaseActivity {
 
 
         adapter.setIRVOnLongListener((mySubject, position) -> {
+            Toast.makeText(mContext, "courseID==" + mySubject.getCourseId(), Toast.LENGTH_SHORT).show();
             //删除操作
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("确定删除该课程?")
-                    .setContentText("删除后只能重新报名！!")
+                    .setTitleText("确定退出该课程?")
+                    .setContentText("退出后只能重新报名！!")
                     .setCancelText("放弃!")
                     .setConfirmText("是的!")
                     .showCancelButton(true)
                     .setCancelClickListener(sDialog -> {
                         sDialog.setTitleText("Cancelled!")
                                 .setConfirmText("OK")
-                                .setContentText("放弃删除")
+                                .setContentText("放弃退出")
                                 .showCancelButton(false)
                                 .setCancelClickListener(null)
                                 .setConfirmClickListener(null)
@@ -103,7 +105,7 @@ public class SelectedCourseListActivity extends BaseActivity {
                             .subscribe(aLong -> {
                                         if (aLong >= 0) {
                                             sDialog.setTitleText("Deleted!")
-                                                    .setContentText("删除成功")
+                                                    .setContentText("退出成功")
                                                     .setConfirmText("OK")
                                                     .showCancelButton(false)
                                                     .setCancelClickListener(null)
@@ -114,7 +116,7 @@ public class SelectedCourseListActivity extends BaseActivity {
                                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                         } else {
                                             new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                                                    .setTitleText("删除失败!")
+                                                    .setTitleText("退出失败!")
                                                     .show();
                                         }
                                     }
@@ -200,12 +202,15 @@ public class SelectedCourseListActivity extends BaseActivity {
         TextView idTvCourseNum = dialogView.findViewById(R.id.id_tv_course_num_desc);
         TextView idTvCourseScore = dialogView.findViewById(R.id.id_tv_course_score_desc);
         int bgColor = mContext.getResources().getColor(R.color.tb_blue3);
+
+
         RxTextTool.getBuilder("课程名称：").append(mySubject.getName()).setForegroundColor(bgColor).into(idTvCourseName);
         RxTextTool.getBuilder("授课教师：").append(mySubject.getTeacher()).setForegroundColor(bgColor).into(idTvCourseTeacher);
         RxTextTool.getBuilder("授课地点：").append(mySubject.getRoom()).setForegroundColor(bgColor).into(idTvCourseRoom);
         RxTextTool.getBuilder("蹭课人数：").append(mySubject.getCourseStuApplications() + " (" + mySubject.getCourseStuNum() + ")").setForegroundColor(bgColor).into(idTvCourseStuNum);
         RxTextTool.getBuilder("授课时间：").append("第" + mySubject.getWeekList().get(0) + "周，周" + mySubject.getDay() + ", 第" + mySubject.getStart() + "节开始").setForegroundColor(bgColor).into(idTvCourseDate);
         RxTextTool.getBuilder("课程学分：").append(String.valueOf(mySubject.getCourseScore())).setForegroundColor(bgColor).into(idTvCourseScore);
+        RxTextTool.getBuilder("课程节数：").append(mySubject.getStep() + "节").setForegroundColor(bgColor).into(idTvCourseNum);
 
         new android.app.AlertDialog.Builder(mContext)
                 .setView(dialogView)

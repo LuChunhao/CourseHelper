@@ -9,6 +9,7 @@ import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class AuditClassActivity extends BaseActivity {
     WeekView idWvCourseList;
     @BindView(R.id.id_tv_course_list)
     TimetableView idTvCourseList;
+    @BindView(R.id.et_search)
+    EditText et_search;
 
     private DbHelper mDbHelper;
     private SweetAlertDialog mSweetAlertDialog;
@@ -89,7 +92,7 @@ public class AuditClassActivity extends BaseActivity {
         mCourseTeacherBeanList = new ArrayList<>();
         mDbHelper = DbHelper.getInstance();
         mSweetAlertDialog.show();
-        getCourseList();
+        getCourseList("");
     }
 
     /**
@@ -119,7 +122,15 @@ public class AuditClassActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
+        et_search.setOnEditorActionListener((view, actionId, keyEvent) -> {
+            String input = view.getText().toString();
 
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                getCourseList(input);
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -370,7 +381,7 @@ public class AuditClassActivity extends BaseActivity {
                         .subscribe(aLong -> {
                             if (aLong >= 0) {
                                 RxToast.normal("新增课程成功！！！");
-                                getCourseList();
+                                getCourseList("");
                                 alertDialog.dismiss();
                             } else {
                                 RxToast.normal("新增课程失败！！！");
@@ -386,8 +397,8 @@ public class AuditClassActivity extends BaseActivity {
     /**
      * 获取课程的列表
      */
-    private void getCourseList() {
-        Observable.just(mDbHelper.queryCourses())
+    private void getCourseList(String key) {
+        Observable.just(mDbHelper.queryCoursesByKey(key))
                 .map(mySubjectList -> {
                     Log.d(TAG, "mySubjectList: " + new Gson().toJson(mySubjectList));
                     if (mCourseTeacherBeanList.size() == 0) {
