@@ -96,7 +96,7 @@ public class AdminStuFragment extends BaseFragment {
                         .setCancelClickListener(null)
                         .setConfirmClickListener(null)
                         .changeAlertType(SweetAlertDialog.ERROR_TYPE))
-                .setConfirmClickListener(sDialog -> Observable.just(mDbHelper.deleteUser(user.getUserId()))
+                .setConfirmClickListener(sDialog -> Observable.just(mDbHelper.deleteUser(user))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
@@ -138,8 +138,9 @@ public class AdminStuFragment extends BaseFragment {
                     Log.d(TAG, "courseTeacherBeans====" + courseTeacherBeans.size());
                     if (courseTeacherBeans.size() > 0) {
                         for (User user : userList) {
+                            Log.d(TAG, "user: " + user.toString());
                             for (CourseTeacherBean bean : courseTeacherBeans) {
-                                if (user.getUserNumber().equals(bean.getTeacher().getUserNumber())) {
+                                if (null != bean.getTeacher() && user.getUserNumber().equals(bean.getTeacher().getUserNumber())) {
                                     user.setCourseTeacherBean(bean);
                                     break;
                                 }

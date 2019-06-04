@@ -81,6 +81,7 @@ public class DbHelper {
      */
     public static final String KEY_COURSE_USER_COURSE_MARK = "userCourseMark";
     public static final String KEY_COURSE_USER_USER_ID = "userId";
+    public static final String KEY_COURSE_USER_TEACHER_ID = "cengkeTeacherName";
 
     public static final String KEY_AUDIT_COURSE_NAME = "courseName";
     public static final String KEY_AUDIT_COURSE_TEACHER = "courseName";
@@ -111,7 +112,7 @@ public class DbHelper {
             KEY_COURSE_STU_NUM + " integer, " + KEY_COURSE_NUM + " integer, " + KEY_COURSE_SCORE + " float, " + KEY_COURSE_COURSE_ID + " integer);";
 
     private static final String CREATE_COURSE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_USER_TABLE + " (" + KEY_COURSE_USER_ID + " integer primary key autoincrement, " +
-
+            KEY_COURSE_USER_TEACHER_ID + " text, " +
             KEY_COURSE_USER_COURSE_ID + " integer, " + KEY_COURSE_USER_USER_ID + " integer, " + KEY_COURSE_USER_COURSE_MARK + " float);";
 
     private static final String CREATE_COURSE_TEACHER_TABLE = "CREATE TABLE IF NOT EXISTS " + DATABASE_COURSE_TEACHER_TABLE + " (" + KEY_ID + " integer primary key autoincrement, " +
@@ -435,17 +436,42 @@ public class DbHelper {
     /**
      * 修改用户信息 修改密码
      *
-     * @param userId
+     * @param user
      * @return
      */
-    public long deleteUser(int userId) {
+    public long deleteUser(User user) {
+        if (null == user) return -1;
         long result = -1;
         mDb.beginTransaction();
         try {
-            result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_USER_ID + "=?", new String[]{String.valueOf(userId)});
-            if (result >= 0) {
-                result = mDb.delete(DATABASE_USER_TABLE, KEY_ID + "=?", new String[]{String.valueOf(userId)});
+            if (user.getUserType() == 0) {  // 学生
+                result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_USER_ID + "=?", new String[]{String.valueOf(user.getUserId())});
+                if (result >= 0) {
+                    result = mDb.delete(DATABASE_USER_TABLE, KEY_ID + "=?", new String[]{String.valueOf(user.getUserId())});
+                }
+            } else if (user.getUserType() == 2){
+                //  查询该教师新建的课程id
+//                List<MySubject> mySubjectList = new ArrayList<>();
+//                Cursor cursorTeacher = mDb.query(DATABASE_COURSE_TEACHER_TABLE, null, KEY_COURSE_TEACHER_ID + "=?", new String[]{String.valueOf(teacherId)}, null, null, null);
+//                if (cursorTeacher.moveToFirst()) {
+//                    int courseId = cursorTeacher.getInt(cursorTeacher.getColumnIndex(KEY_ID));
+//                    List<MySubject> mySubjectListTmp = queryCourses(courseId);
+//                    mySubjectList.addAll(mySubjectListTmp);
+//                }
+
+                // 删除教师新建的课程
+                result = mDb.delete(DATABASE_COURSE_TEACHER_TABLE, KEY_COURSE_TEACHER_ID + "=?", new String[]{String.valueOf(user.getUserId())});
+                if (result >= 0) {  // 删除管理员发布的这个教师的课程
+                    result = mDb.delete(DATABASE_COURSE_TABLE, KEY_COURSE_TEACHER_NAME + "=?", new String[]{String.valueOf(user.getUserName())});
+                }
+                if (result >= 0) {  // 删除学生蹭的这个老师的课程
+                    result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_TEACHER_ID + "=?", new String[]{String.valueOf(user.getUserName())});
+                }
+                if (result >= 0) {
+                    result = mDb.delete(DATABASE_USER_TABLE, KEY_ID + "=?", new String[]{String.valueOf(user.getUserId())});
+                }
             }
+
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
@@ -566,13 +592,14 @@ public class DbHelper {
      *
      * @return
      */
-    public long insertCourseUser(int courseId, int userId) {
+    public long insertCourseUser(int courseId, int userId, String teacher) {
         long result = -1;
         mDb.beginTransaction();
         try {
             ContentValues courseValue = new ContentValues();
             courseValue.put(KEY_COURSE_USER_COURSE_ID, courseId);
             courseValue.put(KEY_COURSE_USER_USER_ID, userId);
+            courseValue.put(KEY_COURSE_USER_TEACHER_ID, teacher);
             result = mDb.insert(DATABASE_COURSE_USER_TABLE, null, courseValue);
             mDb.setTransactionSuccessful();
         } catch (Exception e) {
@@ -717,13 +744,13 @@ public class DbHelper {
      *
      * @return
      */
-    public long deleteCourseByCourseId(int courseId) {
+    public long deleteCourseByCourseId(String teacherName) {
         long result = -1;
         mDb.beginTransaction();
         try {
-            result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_COURSE_ID + "=?", new String[]{String.valueOf(courseId)});
+            result = mDb.delete(DATABASE_COURSE_USER_TABLE, KEY_COURSE_USER_TEACHER_ID + "=?", new String[]{String.valueOf(teacherName)});
             if (result >= 0) {
-                result = mDb.delete(DATABASE_COURSE_TABLE, KEY_COURSE_COURSE_ID + "=?", new String[]{String.valueOf(courseId)});
+                result = mDb.delete(DATABASE_COURSE_TABLE, KEY_COURSE_TEACHER_NAME + "=?", new String[]{String.valueOf(teacherName)});
             }
             mDb.setTransactionSuccessful();
         } catch (Exception e) {

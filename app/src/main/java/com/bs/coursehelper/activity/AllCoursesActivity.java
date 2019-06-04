@@ -93,7 +93,7 @@ public class AllCoursesActivity extends BaseActivity {
                             long isSucess = -1;
                             if (aLong==0){
                                 try {
-                                    isSucess = mDbHelper.insertCourseUser(mySubject.getCourseId(), user.getUserId());
+                                    isSucess = mDbHelper.insertCourseUser(mySubject.getCourseId(), user.getUserId(), mySubject.getTeacher());
                                 } catch (SQLiteException sqLiteException) {
                                     isSucess = -1;
                                     sqLiteException.printStackTrace();

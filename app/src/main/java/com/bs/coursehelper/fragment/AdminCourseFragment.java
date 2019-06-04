@@ -92,7 +92,7 @@ public class AdminCourseFragment extends BaseFragment {
                                 .setConfirmClickListener(null)
                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
                     })
-                    .setConfirmClickListener(sDialog -> Observable.just(mDbHelper.deleteCourseByCourseId(mySubject.getCourseId()))
+                    .setConfirmClickListener(sDialog -> Observable.just(mDbHelper.deleteCourseByCourseId(mySubject.getTeacher()))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(aLong -> {
@@ -122,6 +122,14 @@ public class AdminCourseFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getCourseList();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && null != mDbHelper) {
+            getCourseList();
+        }
     }
 
     /**

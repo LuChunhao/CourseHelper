@@ -640,7 +640,7 @@ public class CourseListActivity extends BaseActivity {
 
         String[] ScheduleNameList = new String[size];
         int index = 0;
-
+        List<CourseTeacherBean> selectTeacherBeanList = new ArrayList<>();
         for (CourseTeacherBean bean : mCourseTeacherBeanList) {
             boolean flag = false;
             for (Schedule selectBean : selectScheduleList) {
@@ -650,6 +650,7 @@ public class CourseListActivity extends BaseActivity {
                 }
             }
             if (!flag) {
+                selectTeacherBeanList.add(bean);
                 ScheduleNameList[index] = bean.getCourseName() + "（" + bean.getTeacher().getUserName() + "）";
                 index++;
             }
@@ -665,7 +666,8 @@ public class CourseListActivity extends BaseActivity {
                         RxToast.normal("请先选择要发布的课程");
                         return;
                     }
-                    showAddCourse(getCurWeek(), day, start, mCourseTeacherBeanList.get(selectIndexExclude));
+
+                    showAddCourse(getCurWeek(), day, start, selectTeacherBeanList.get(selectIndexExclude));
                 })
                 .setOnDismissListener(dialogInterface -> selectIndexExclude = -1)
                 .setNegativeButton("取消", null).create().show();

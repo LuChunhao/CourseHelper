@@ -583,6 +583,7 @@ public class AuditClassActivity extends BaseActivity {
                     //mSweetAlertDialog.show();
 
                     int courseId = (int) schedule.getExtras().get(MySubject.ID);
+                    String teacher = schedule.getTeacher();
                     //Toast.makeText(this, "id==" + courseId, Toast.LENGTH_SHORT).show();
 
 //                    courseId = 0;
@@ -602,7 +603,7 @@ public class AuditClassActivity extends BaseActivity {
                                 long isSucess = -1;
                                 if (aLong == 0) {
                                     try {
-                                        isSucess = mDbHelper.insertCourseUser(courseId, user.getUserId());
+                                        isSucess = mDbHelper.insertCourseUser(courseId, user.getUserId(), teacher);
                                     } catch (SQLiteException sqLiteException) {
                                         isSucess = -1;
                                         sqLiteException.printStackTrace();

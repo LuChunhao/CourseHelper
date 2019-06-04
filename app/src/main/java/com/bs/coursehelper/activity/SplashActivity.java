@@ -120,13 +120,13 @@ public class SplashActivity extends BaseActivity {
         User admin1 = new User("管理员", "123456", "993456", 1);
         User admin2 = new User("admin", "123456", "994698", 1);
 
-        userList.add(student1);
-        userList.add(student2);
-        userList.add(student3);
-        userList.add(teacher1);
-        userList.add(teacher2);
-        userList.add(teacher3);
-        userList.add(teacher4);
+//        userList.add(student1);
+//        userList.add(student2);
+//        userList.add(student3);
+//        userList.add(teacher1);
+//        userList.add(teacher2);
+//        userList.add(teacher3);
+//        userList.add(teacher4);
         userList.add(admin1);
         userList.add(admin2);
 
